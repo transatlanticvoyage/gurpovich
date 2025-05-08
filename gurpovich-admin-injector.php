@@ -16,7 +16,7 @@ function gurpovich_injector_menu() {
         'Gurpovich Admin Injector',
         'Gurpovich Admin Injector',
         'manage_options',
-        'gurpovich-admin-injector',
+        'gurposcreen1',
         'gurpovich_injector_page',
         'dashicons-admin-generic',
         2
@@ -117,7 +117,7 @@ add_action('admin_menu', function() {
         'Gurpovich Injector 2',
         'Gurpovich Injector 2',
         'manage_options',
-        'gurpovich-admin-injector2',
+        'gurposcreen2',
         'gurpovich_injector2_page',
         'dashicons-admin-generic',
         3 // Position after the original
