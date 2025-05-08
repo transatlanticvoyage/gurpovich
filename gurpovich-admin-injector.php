@@ -59,6 +59,15 @@ function gurpovich_injector_menu() {
         'gurposcreen5',
         'gurpo_screen5_page'
     );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Gurpovich 6',
+        'Gurpovich 6',
+        'manage_options',
+        'gurposcreen6',
+        'gurpo_screen6_page'
+    );
 }
 
 // Render admin page and handle mapping save + JSON update
@@ -220,5 +229,9 @@ function gurpo_screen4_page() {
 
 function gurpo_screen5_page() {
     echo '<div class="wrap"><h1>Gurpo Screen 5</h1></div>';
+}
+
+function gurpo_screen6_page() {
+    echo '<div class="wrap"><h1>Gurpo Screen 6</h1></div>';
 }
 ?>
