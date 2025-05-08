@@ -61,7 +61,7 @@ function gurpovich_injector_page() {
             if (is_array($elements)) {
                 $new = gurpovich_process_elements($elements,$map);
                 update_post_meta($post_id,'_elementor_data',$new);
-                echo '<div class="updated"><p>Elementor data updated.</p></div>';
+                echo '<div class="updated"><p>Elementor data updated. 1</p></div>';
             } else {
                 echo '<div class="error"><p>Could not decode Elementor data.</p></div>';
             }
