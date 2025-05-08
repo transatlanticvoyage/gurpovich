@@ -251,11 +251,10 @@ function gurpo_fillernar1_page() {
     // Get the current fillernar content
     $fillernar_content = get_option('gurpo_fillernar1_content', array());
     
-    // If no content exists, initialize with the first number
-    if (empty($fillernar_content)) {
-        $fillernar_content = array(1);
-        update_option('gurpo_fillernar1_content', $fillernar_content);
-    }
+    // Add the next number
+    $next_number = count($fillernar_content) + 1;
+    $fillernar_content[] = $next_number;
+    update_option('gurpo_fillernar1_content', $fillernar_content);
     
     // Display each number on a new line
     foreach ($fillernar_content as $number) {
