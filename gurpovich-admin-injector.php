@@ -209,39 +209,6 @@ function gurpovich_injector2_page() {
     echo '</tbody></table>';
 }
 
-// Add three new admin menu pages
-add_action('admin_menu', function() {
-    add_menu_page(
-        'Gurpo Screen 3',
-        'Gurpo Screen 3',
-        'manage_options',
-        'gurposcreen3',
-        'gurpo_screen3_page',
-        'dashicons-admin-generic',
-        4
-    );
-
-    add_menu_page(
-        'Gurpo Screen 4',
-        'Gurpo Screen 4',
-        'manage_options',
-        'gurposcreen4',
-        'gurpo_screen4_page',
-        'dashicons-admin-generic',
-        5
-    );
-
-    add_menu_page(
-        'Gurpo Screen 5',
-        'Gurpo Screen 5',
-        'manage_options',
-        'gurposcreen5',
-        'gurpo_screen5_page',
-        'dashicons-admin-generic',
-        6
-    );
-});
-
 // Callback functions for the new pages
 function gurpo_screen3_page() {
     echo '<div class="wrap"><h1>Gurpo Screen 3</h1></div>';
