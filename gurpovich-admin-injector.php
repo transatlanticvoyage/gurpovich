@@ -1,4 +1,5 @@
 <?php
+// No-op test commit for learning the deploy process
 /*
 Plugin Name: Gurpovich Admin Injector
 Description: Injects user-defined content into Elementor data JSON directly upon mapping save.
