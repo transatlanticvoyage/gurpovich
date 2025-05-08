@@ -80,6 +80,13 @@ function gurpovich_injector_page() {
             echo '<p>No mapping.</p>';
         }
     }
+    
+    // Service Pages Section
+    echo '<h2>Service Pages</h2>';
+    echo '<div class="service-pages-section">';
+    // Content will be added here later
+    echo '</div>';
+    
     echo '</div>';
 }
 
