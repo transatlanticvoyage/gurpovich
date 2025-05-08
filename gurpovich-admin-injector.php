@@ -110,4 +110,64 @@ function gurpovich_process_elements($elements,$map) {
     }
     return $elements;
 }
+
+// Add a new admin menu page for the new interface
+add_action('admin_menu', function() {
+    add_menu_page(
+        'Gurpovich Injector 2',
+        'Gurpovich Injector 2',
+        'manage_options',
+        'gurpovich-admin-injector2',
+        'gurpovich_injector2_page',
+        'dashicons-admin-generic',
+        3 // Position after the original
+    );
+});
+
+// Callback for the new admin page
+function gurpovich_injector2_page() {
+    echo '<h1>Gurpovich Injector - Main Screen 1</h1>';
+    echo '<h2>Pages To Deal With:</h2>';
+    echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
+    echo '<thead>
+        <tr>
+            <th>Page</th>
+            <th colspan="2" style="text-align:center;">Select a page</th>
+            <th>Use assigned default</th>
+            <th>wp-post-id</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>';
+
+    $pages = [
+        ['Home', 306],
+        ['Services', 208],
+        ['About', 188],
+        ['Contact', 234],
+        ['Privacy Policy', 126],
+        ['Modern Slavery', 260],
+    ];
+
+    foreach ($pages as $page) {
+        list($label, $post_id) = $page;
+        echo '<tr>
+            <td><strong>' . esc_html($label) . '</strong></td>
+            <td>
+                <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $label))) . '">
+                    <option value="">select a page</option>
+                    <!-- Populate with WP pages if needed -->
+                </select>
+            </td>
+            <td style="text-align:center; color:#0073aa; font-weight:bold;">OR</td>
+            <td>Use assigned default</td>
+            <td>' . esc_html($post_id) . '</td>
+            <td>
+                <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
+            </td>
+        </tr>';
+    }
+
+    echo '</tbody></table>';
+}
 ?>
