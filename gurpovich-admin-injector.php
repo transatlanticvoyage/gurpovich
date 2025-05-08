@@ -245,7 +245,9 @@ function gurpo_screen6_page() {
 }
 
 function gurpo_fillernar1_page() {
-    echo '<div class="wrap"><h1>Fillernar 1</h1>';
+    echo '<div class="wrap">';
+    echo '<h1>Fillernar - Special Custom Filler Content Update System</h1>';
+    echo '<h2>Fillernar 1</h2>';
     echo '<div id="fillernar-content">';
     
     // Get the current fillernar content
