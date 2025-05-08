@@ -68,6 +68,15 @@ function gurpovich_injector_menu() {
         'gurposcreen6',
         'gurpo_screen6_page'
     );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Fillernar 1',
+        'Fillernar 1',
+        'manage_options',
+        'gurpofillernar1',
+        'gurpo_fillernar1_page'
+    );
 }
 
 // Render admin page and handle mapping save + JSON update
@@ -234,4 +243,31 @@ function gurpo_screen5_page() {
 function gurpo_screen6_page() {
     echo '<div class="wrap"><h1>Gurpo Screen 6</h1></div>';
 }
+
+function gurpo_fillernar1_page() {
+    echo '<div class="wrap"><h1>Fillernar 1</h1>';
+    echo '<div id="fillernar-content">';
+    
+    // Get the current fillernar content
+    $fillernar_content = get_option('gurpo_fillernar1_content', array());
+    
+    // Display each number on a new line
+    foreach ($fillernar_content as $number) {
+        echo '<div class="fillernar-number">' . esc_html($number) . '</div>';
+    }
+    
+    echo '</div>';
+    echo '</div>';
+}
+
+// Handle Fillernar content updates
+add_action('admin_init', function() {
+    if (isset($_POST['fillernar_update']) && check_admin_referer('fillernar_update_nonce')) {
+        $fillernar_content = get_option('gurpo_fillernar1_content', array());
+        $fillernar_content[] = count($fillernar_content) + 1;
+        update_option('gurpo_fillernar1_content', $fillernar_content);
+        wp_redirect(admin_url('admin.php?page=gurpofillernar1'));
+        exit;
+    }
+});
 ?>
