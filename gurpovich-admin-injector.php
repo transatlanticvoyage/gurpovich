@@ -12,14 +12,52 @@ if (!defined('ABSPATH')) exit;
 // Add admin menu
 add_action('admin_menu', 'gurpovich_injector_menu');
 function gurpovich_injector_menu() {
+    // Main menu item
     add_menu_page(
-        'Gurpovich Admin Injector',
-        'Gurpovich Admin Injector',
+        'Gurpovich 1',
+        'Gurpovich 1',
         'manage_options',
         'gurposcreen1',
         'gurpovich_injector_page',
         'dashicons-admin-generic',
         2
+    );
+
+    // Submenu items
+    add_submenu_page(
+        'gurposcreen1',
+        'Gurpovich 2',
+        'Gurpovich 2',
+        'manage_options',
+        'gurposcreen2',
+        'gurpovich_injector2_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Gurpovich 3',
+        'Gurpovich 3',
+        'manage_options',
+        'gurposcreen3',
+        'gurpo_screen3_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Gurpovich 4',
+        'Gurpovich 4',
+        'manage_options',
+        'gurposcreen4',
+        'gurpo_screen4_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Gurpovich 5',
+        'Gurpovich 5',
+        'manage_options',
+        'gurposcreen5',
+        'gurpo_screen5_page'
     );
 }
 
