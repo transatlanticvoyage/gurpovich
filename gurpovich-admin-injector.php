@@ -35,8 +35,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Screen 3 - Inject 1',
-        'Screen 3 - Inject 1',
+        'Screen 3 - Inject 1 -Homepage',
+        'Screen 3 - Inject 1 -Homepage',
         'manage_options',
         'gurposcreen3',
         'gurpo_screen3_page'
@@ -121,6 +121,15 @@ function gurpovich_injector_menu() {
         'manage_options',
         'gurposcreen20',
         'gurpo_screen20_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 10 - images',
+        'Screen 10 - images',
+        'manage_options',
+        'gurposcreen10',
+        'gurpo_screen10_page'
     );
 }
 
@@ -617,7 +626,7 @@ function gurpo_screen3_page() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
     echo '<div class="wrap">';
-    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 3 - Inject 1</div>';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 3 - Inject 1 -Homepage</div>';
     echo '<h1>balarfi</h1>';
     
     // Get all published pages
@@ -1192,12 +1201,40 @@ function gurpo_screen0_page() {
     echo '<h1>Screen 0 - API Keys</h1>';
     echo $feedback;
     echo '<div style="max-width:500px; background:#f8f8ff; border-radius:10px; box-shadow:0 2px 8px #eee; padding:30px 30px 20px 30px;">';
-    echo '<style>.gurpo-api-key-label{font-weight:bold;font-size:1.1em;margin-bottom:4px;display:block;} .gurpo-api-key-row{margin-bottom:28px;} .gurpo-api-key-input{width:80%;padding:8px 10px;border-radius:5px;border:1px solid #bbb;font-size:1em;} .gurpo-api-key-btn{background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-left:10px;} .gurpo-api-key-btn:active{background:#4b1e7a;}</style>';
+    echo '<style>.gurpo-api-key-label{font-weight:bold;font-size:1.1em;margin-bottom:4px;display:block;} .gurpo-api-key-row{margin-bottom:28px;} .gurpo-api-key-input{width:80%;padding:8px 10px;border-radius:5px;border:1px solid #bbb;font-size:1em;} .gurpo-api-key-btn{background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-left:10px;} .gurpo-api-key-btn:active{background:#4b1e7a;} .gurpo-api-key-input.blank{color:#bbb;} .gurpo-api-key-input.asterisks{color:#111;letter-spacing:2px;}</style>';
+    echo '<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".gurpo-api-key-input").forEach(function(input) {
+            var realValue = input.getAttribute("data-real-value");
+            function setDisplay() {
+                if (document.activeElement === input) {
+                    input.value = realValue;
+                    input.classList.remove("blank");
+                    input.classList.remove("asterisks");
+                } else if (!realValue) {
+                    input.value = "(blank)";
+                    input.classList.add("blank");
+                    input.classList.remove("asterisks");
+                } else {
+                    input.value = "*".repeat(realValue.length);
+                    input.classList.remove("blank");
+                    input.classList.add("asterisks");
+                }
+            }
+            setDisplay();
+            input.addEventListener("focus", setDisplay);
+            input.addEventListener("blur", setDisplay);
+        });
+    });
+    </script>';
     foreach ($apis as $label => $option_name) {
-        $value = esc_attr(get_option($option_name, ''));
+        $real_value = get_option($option_name, '');
+        $display_value = '';
+        $input_class = 'gurpo-api-key-input';
+        // The JS will handle the display, so just leave value empty
         echo '<form method="post" class="gurpo-api-key-row" style="display:flex;align-items:center;">';
         echo '<label class="gurpo-api-key-label" for="' . esc_attr($option_name) . '">' . esc_html($label) . ' API Key</label>';
-        echo '<input class="gurpo-api-key-input" type="text" id="' . esc_attr($option_name) . '" name="gurpo_api_key_value" value="' . $value . '" autocomplete="off" />';
+        echo '<input class="' . $input_class . '" type="text" id="' . esc_attr($option_name) . '" name="gurpo_api_key_value" value="" data-real-value="' . esc_attr($real_value) . '" autocomplete="off" />';
         echo '<input type="hidden" name="gurpo_api_key_field" value="' . esc_attr($option_name) . '" />';
         echo '<button type="submit" name="gurpo_api_key_save" class="gurpo-api-key-btn">save</button>';
         echo '</form>';
@@ -1214,5 +1251,13 @@ function gurpo_screen20_page() {
     echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 20 - prompts</div><h1>Screen 20 - prompts</h1>';
     echo '<div style="margin-top:20px; color:#444; font-size:1.08em; background:#f8f8ff; border-radius:6px; padding:14px 18px; max-width:600px;">NoteToSelfKarl: must build ability to copy prompts + driggs together - while ONLY viewing the prompt (driggs won\'t be cluttering screen)</div>';
     echo '</div>';
+}
+
+function gurpo_screen10_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 10 - images</div><h1>Screen 10 - images</h1></div>';
 }
 ?>
