@@ -399,7 +399,7 @@ function gurpovich_injector2_page() {
             // Get the temprex_of_shortcodes content if a post ID exists
             $temprex_content = '';
             if (!empty($pageidea->rel_wp_post_id_1)) {
-                $temprex_content = get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_temprex_of_shortcodes', true);
+                $temprex_content = get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_temprex_1_scraped', true);
             }
 
             echo '<tr>
@@ -660,10 +660,10 @@ function gurpo_screen3_page() {
             $feedback = '<div style="background:#b72e2e;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Error: ' . esc_html($result) . '</div>';
         }
         // Refresh values after update
-        $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_of_shortcodes', true);
+        $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true);
         $prexnar1 = get_post_meta($selected_page_id, 'gurpo_prexnar1', true);
     } else {
-        $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_of_shortcodes', true) : '';
+        $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true) : '';
         $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
     }
     
@@ -992,7 +992,7 @@ function gurpo_db_viewer_page() {
 
 /**
  * Fetches the Elementor JSON data of a given post/page, extracts all [g_...] shortcodes and g_... keys/values in order,
- * and stores them (one per line) in the custom field gurpo_temprex_of_shortcodes for that post/page.
+ * and stores them (one per line) in the custom field gurpo_temprex_1_scraped for that post/page.
  *
  * @param int $post_id The ID of the post/page to scrape.
  * @return bool|string True on success, error message on failure.
@@ -1035,7 +1035,7 @@ function scrape_temprex_from_existing_page($post_id) {
     // Remove duplicates, keep order
     $matches = array_values(array_unique($matches));
     $shortcode_list = implode("\n", $matches);
-    update_post_meta($post_id, 'gurpo_temprex_of_shortcodes', $shortcode_list);
+    update_post_meta($post_id, 'gurpo_temprex_1_scraped', $shortcode_list);
     return true;
 }
 
@@ -1050,7 +1050,7 @@ add_action('wp_ajax_gurpo_scrape_temprex', function() {
     }
     $result = scrape_temprex_from_existing_page($post_id);
     if ($result === true) {
-        $temprex = get_post_meta($post_id, 'gurpo_temprex_of_shortcodes', true);
+        $temprex = get_post_meta($post_id, 'gurpo_temprex_1_scraped', true);
         wp_send_json_success(['temprex' => $temprex]);
     } else {
         wp_send_json_error($result);
