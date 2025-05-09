@@ -262,9 +262,9 @@ function gurpovich_injector2_page() {
         }
         .gurpo-table .or-col {
             background: #000; color: #fff; font-weight: bold; text-align: center;
-            min-width: 30px;
-            max-width: 30px;
-            width: 30px;
+            min-width: 28px;
+            max-width: 28px;
+            width: 28px;
         }
         .gurpo-table .radio-col {
             width: 28px; min-width: 28px; max-width: 28px; text-align: center; padding-left: 2px; padding-right: 2px;
