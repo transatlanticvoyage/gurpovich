@@ -274,17 +274,36 @@ function gurpovich_injector2_page() {
         ORDER BY order_for_display_on_interface_1 ASC
     ");
 
+    // Get all published pages
+    $args = array(
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC'
+    );
+    $pages = get_posts($args);
+
     if ($pageideas) {
         foreach ($pageideas as $pageidea) {
             echo '<tr>
                 <td style="border-right: 2px solid #000000;"><strong>' . esc_html($pageidea->name) . '</strong></td>
+                <td style="width: 50px; text-align: center;">
+                    <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="custom" style="width: 20px; height: 20px;">
+                </td>
                 <td>
-                    <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '">
-                        <option value="">select a page</option>
-                        <!-- Populate with WP pages if needed -->
-                    </select>
+                    <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '" style="width: 100%;">
+                        <option value="">select a page</option>';
+                        foreach ($pages as $page) {
+                            $selected = ($page->ID == $pageidea->rel_wp_post_id_1) ? 'selected' : '';
+                            echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>[' . esc_html($page->ID) . '] ' . esc_html($page->post_title) . '</option>';
+                        }
+                    echo '</select>
                 </td>
                 <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
+                <td style="width: 50px; text-align: center;">
+                    <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="default" style="width: 20px; height: 20px;">
+                </td>
                 <td>Use assigned default</td>
                 <td>' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
                 <td>
@@ -293,9 +312,48 @@ function gurpovich_injector2_page() {
             </tr>';
         }
     } else {
-        echo '<tr><td colspan="6">No pageideas found in the database.</td></tr>';
+        echo '<tr><td colspan="8">No pageideas found in the database.</td></tr>';
     }
     echo '</tbody></table>';
+
+    // Add JavaScript to handle radio button selection
+    echo '<script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const rows = document.querySelectorAll("tr");
+            rows.forEach(row => {
+                const radios = row.querySelectorAll("input[type=radio]");
+                const select = row.querySelector("select");
+                
+                if (radios && select) {
+                    // Set initial state
+                    if (select.value) {
+                        radios[0].checked = true;
+                    } else {
+                        radios[1].checked = true;
+                    }
+                    
+                    // Handle radio changes
+                    radios.forEach(radio => {
+                        radio.addEventListener("change", function() {
+                            if (this.value === "custom") {
+                                select.disabled = false;
+                            } else {
+                                select.disabled = true;
+                                select.value = "";
+                            }
+                        });
+                    });
+                    
+                    // Handle select changes
+                    select.addEventListener("change", function() {
+                        if (this.value) {
+                            radios[0].checked = true;
+                        }
+                    });
+                }
+            });
+        });
+    </script>';
 
     // Service Pages Section
     echo '<h2>Service Pages</h2>';
