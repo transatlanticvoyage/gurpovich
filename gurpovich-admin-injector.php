@@ -77,6 +77,15 @@ function gurpovich_injector_menu() {
         'gurpofillernar1',
         'gurpo_fillernar1_page'
     );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'DB Table Viewer gurpo_pageideas',
+        'DB Table Viewer gurpo_pageideas',
+        'manage_options',
+        'gurpo-db-viewer',
+        'gurpo_db_viewer_page'
+    );
 }
 
 // Render admin page and handle mapping save + JSON update
@@ -183,7 +192,17 @@ add_action('admin_menu', function() {
 // Callback for the new admin page
 function gurpovich_injector2_page() {
     echo '<h1>Gurpovich Injector - Main Screen 1</h1>';
-    echo '<h2>Pages To Deal With:</h2>';
+    
+    // Kardwaj Key Connector Section
+    echo '<h2>Kardwaj Key Connector of Post ID</h2>';
+    echo '<form method="post">';
+    wp_nonce_field('kardwaj_action', 'kardwaj_nonce');
+    echo '<p><input type="text" name="kardwaj_keys" id="kardwaj_keys" placeholder="Paste your key here: 484, 28, 05, 49, 402, 204" style="width:100%;max-width:500px;"></p>';
+    echo '<p><input type="submit" name="kardwaj_submit" class="button button-primary" value="Insert Post IDs Into Pageideas"></p>';
+    echo '</form>';
+
+    // Pageideas Section (renamed from Pages To Deal With)
+    echo '<h2>Pageideas</h2>';
     echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
     echo '<thead>
         <tr>
@@ -277,4 +296,91 @@ add_action('admin_init', function() {
         exit;
     }
 });
+
+// Create database table and insert default data on plugin activation
+register_activation_hook(__FILE__, 'gurpovich_plugin_activation');
+function gurpovich_plugin_activation() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'gurpo_pageideas';
+    $charset_collate = $wpdb->get_charset_collate();
+
+    // Create the table
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        order_for_display_on_interface_1 int(11) NOT NULL,
+        name varchar(255) NOT NULL,
+        rel_wp_post_id_1 bigint(20) DEFAULT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+
+    // Insert default data if table is empty
+    $count = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
+    if ($count == 0) {
+        $default_data = array(
+            array('order_for_display_on_interface_1' => 1, 'name' => 'Home', 'rel_wp_post_id_1' => NULL),
+            array('order_for_display_on_interface_1' => 2, 'name' => 'Services', 'rel_wp_post_id_1' => NULL),
+            array('order_for_display_on_interface_1' => 3, 'name' => 'About', 'rel_wp_post_id_1' => NULL),
+            array('order_for_display_on_interface_1' => 4, 'name' => 'Contact', 'rel_wp_post_id_1' => NULL),
+            array('order_for_display_on_interface_1' => 5, 'name' => 'Privacy Policy', 'rel_wp_post_id_1' => NULL),
+            array('order_for_display_on_interface_1' => 6, 'name' => 'Modern Slavery', 'rel_wp_post_id_1' => NULL)
+        );
+
+        foreach ($default_data as $row) {
+            $wpdb->insert($table_name, $row);
+        }
+    }
+}
+
+// Clean up on plugin deactivation (optional - remove if you want to keep the data)
+register_deactivation_hook(__FILE__, 'gurpovich_plugin_deactivation');
+function gurpovich_plugin_deactivation() {
+    // Uncomment the following line if you want to remove the table on deactivation
+    // global $wpdb;
+    // $table_name = $wpdb->prefix . 'gurpo_pageideas';
+    // $wpdb->query("DROP TABLE IF EXISTS $table_name");
+}
+
+// Database table viewer page
+function gurpo_db_viewer_page() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'gurpo_pageideas';
+    
+    echo '<div class="wrap">';
+    echo '<h1>DB Table Viewer gurpo_pageideas</h1>';
+    
+    // Get all records from the table
+    $records = $wpdb->get_results("SELECT * FROM $table_name ORDER BY order_for_display_on_interface_1 ASC");
+    
+    if ($records) {
+        echo '<table class="wp-list-table widefat fixed striped">';
+        echo '<thead>';
+        echo '<tr>';
+        echo '<th>ID</th>';
+        echo '<th>Order</th>';
+        echo '<th>Name</th>';
+        echo '<th>WP Post ID</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        
+        foreach ($records as $record) {
+            echo '<tr>';
+            echo '<td>' . esc_html($record->id) . '</td>';
+            echo '<td>' . esc_html($record->order_for_display_on_interface_1) . '</td>';
+            echo '<td>' . esc_html($record->name) . '</td>';
+            echo '<td>' . esc_html($record->rel_wp_post_id_1) . '</td>';
+            echo '</tr>';
+        }
+        
+        echo '</tbody>';
+        echo '</table>';
+    } else {
+        echo '<p>No records found in the database table.</p>';
+    }
+    
+    echo '</div>';
+}
 ?>
