@@ -239,7 +239,7 @@ function gurpovich_injector2_page() {
         $table_name = $wpdb->prefix . 'gurpo_pageideas';
         
         // Clear all rel_wp_post_id_1 values
-        $wpdb->update(
+        $result = $wpdb->update(
             $table_name,
             array('rel_wp_post_id_1' => NULL),
             array(),
@@ -247,7 +247,13 @@ function gurpovich_injector2_page() {
             array()
         );
         
-        echo '<div class="updated"><p>All Post IDs have been cleared.</p></div>';
+        if ($result !== false) {
+            echo '<div class="updated"><p>All Post IDs have been cleared.</p></div>';
+            // Force a page refresh to show the cleared values
+            echo '<script type="text/javascript">window.location.reload();</script>';
+        } else {
+            echo '<div class="error"><p>Error clearing Post IDs. Please try again.</p></div>';
+        }
     }
 
     // Pageideas Section
