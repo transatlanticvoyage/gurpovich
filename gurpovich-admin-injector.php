@@ -170,19 +170,6 @@ function gurpovich_process_elements($elements,$map) {
     return $elements;
 }
 
-// Add a new admin menu page for the new interface
-add_action('admin_menu', function() {
-    add_menu_page(
-        'Gurpovich Injector 2',
-        'Gurpovich Injector 2',
-        'manage_options',
-        'gurposcreen2',
-        'gurpovich_injector2_page',
-        'dashicons-admin-generic',
-        3 // Position after the original
-    );
-});
-
 // Callback for the new admin page
 function gurpovich_injector2_page() {
     echo '<h1>Gurpovich Injector - Main Screen 1</h1>';
@@ -355,7 +342,7 @@ function gurpovich_injector2_page() {
                 </td>
                 <td>Use assigned default</td>
                 <td class="vertical-sep">' .
-                    '<input type="text" name="rel_wp_post_id_1_' . esc_attr($pageidea->id) . '" value="' . esc_attr($pageidea->rel_wp_post_id_1) . '" style="width:30px; text-align:center;" />'
+                    '<input type="text" name="rel_wp_post_id_1_' . esc_attr($pageidea->id) . '" value="' . esc_attr($pageidea->rel_wp_post_id_1) . '" style="width:35px; text-align:center;" />'
                 . '</td>
                 <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
                 <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea($prexnar1_content) . '</textarea></td>
