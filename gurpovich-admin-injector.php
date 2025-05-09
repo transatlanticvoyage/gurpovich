@@ -14,8 +14,8 @@ add_action('admin_menu', 'gurpovich_injector_menu');
 function gurpovich_injector_menu() {
     // Main menu item
     add_menu_page(
-        'Gurpovich 1',
-        'Gurpovich 1',
+        'Screen 1',
+        'Screen 1',
         'manage_options',
         'gurposcreen1',
         'gurpovich_injector_page',
@@ -26,8 +26,8 @@ function gurpovich_injector_menu() {
     // Submenu items
     add_submenu_page(
         'gurposcreen1',
-        'Gurpovich 2',
-        'Gurpovich 2',
+        'Screen 2',
+        'Screen 2',
         'manage_options',
         'gurposcreen2',
         'gurpovich_injector2_page'
@@ -35,8 +35,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Gurpovich 3',
-        'Gurpovich 3',
+        'Screen 3 - Inject 1',
+        'Screen 3 - Inject 1',
         'manage_options',
         'gurposcreen3',
         'gurpo_screen3_page'
@@ -44,8 +44,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Gurpovich 4',
-        'Gurpovich 4',
+        'Screen 4',
+        'Screen 4',
         'manage_options',
         'gurposcreen4',
         'gurpo_screen4_page'
@@ -53,8 +53,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Gurpovich 5',
-        'Gurpovich 5',
+        'Screen 5',
+        'Screen 5',
         'manage_options',
         'gurposcreen5',
         'gurpo_screen5_page'
@@ -62,8 +62,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Gurpovich 6',
-        'Gurpovich 6',
+        'Screen 6',
+        'Screen 6',
         'manage_options',
         'gurposcreen6',
         'gurpo_screen6_page'
@@ -80,8 +80,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'DB Table Viewer gurpo_pageideas',
-        'DB Table Viewer gurpo_pageideas',
+        'DB Table Viewer',
+        'DB Table Viewer',
         'manage_options',
         'gurpo-db-viewer',
         'gurpo_db_viewer_page'
@@ -94,7 +94,9 @@ function gurpovich_injector_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><h1>Gurpovich Admin Injector</h1><form method="post">';
+    echo '<div class="wrap">';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 1</div>';
+    echo '<h1>Gurpovich Admin Injector</h1><form method="post">';
     wp_nonce_field('gurpovich_injector_action','gurpovich_injector_nonce');
     echo '<p><label for="gurp_post_id">WP Post/Page ID:</label><br><input type="number" name="gurp_post_id" id="gurp_post_id" required style="width:100%;max-width:300px;"></p>';
     echo '<p><label for="gurp_content">Content Markup (use [key] lines to identify keys):</label><br><textarea name="gurp_content" id="gurp_content" rows="10" style="width:100%;"></textarea></p>';
@@ -180,6 +182,7 @@ function gurpovich_injector2_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 2</div>';
     echo '<h1>Gurpovich Injector - Main Screen 1</h1>';
     
     // Add JavaScript for confirmation
@@ -578,6 +581,7 @@ function gurpo_screen3_page() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
     echo '<div class="wrap">';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 3 - Inject 1</div>';
     echo '<h1>balarfi</h1>';
     
     // Get all published pages
@@ -653,7 +657,7 @@ function gurpo_screen4_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><h1>Gurpo Screen 4</h1></div>';
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 4</div><h1>Gurpo Screen 4</h1></div>';
 }
 
 function gurpo_screen5_page() {
@@ -661,7 +665,7 @@ function gurpo_screen5_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><h1>Gurpo Screen 5</h1></div>';
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 5</div><h1>Gurpo Screen 5</h1></div>';
 }
 
 function gurpo_screen6_page() {
@@ -669,7 +673,7 @@ function gurpo_screen6_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><h1>Gurpo Screen 6</h1></div>';
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 6</div><h1>Gurpo Screen 6</h1></div>';
 }
 
 function gurpo_fillernar1_page() {
@@ -678,6 +682,7 @@ function gurpo_fillernar1_page() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
     echo '<div class="wrap">';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Fillernar 1</div>';
     echo '<h1>Fillernar - Special Custom Filler Content Update System</h1>';
     echo '<h2>Fillernar 1</h2>';
     echo '<div id="fillernar-content">';
@@ -707,7 +712,7 @@ function gurpovich_plugin_activation() {
     $table_name = $wpdb->prefix . 'gurpo_pageideas';
     $charset_collate = $wpdb->get_charset_collate();
 
-    // Create the table
+    // Create the gurpo_pageideas table
     $sql = "CREATE TABLE IF NOT EXISTS $table_name (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         order_for_display_on_interface_1 int(11) NOT NULL,
@@ -735,6 +740,21 @@ function gurpovich_plugin_activation() {
             $wpdb->insert($table_name, $row);
         }
     }
+
+    // Create the gurpo_driggs table
+    $driggs_table = $wpdb->prefix . 'gurpo_driggs';
+    $driggs_sql = "CREATE TABLE IF NOT EXISTS $driggs_table (
+        id bigint(20) NOT NULL AUTO_INCREMENT,
+        driggs_domain varchar(255) NOT NULL,
+        driggs_industry varchar(255) NOT NULL,
+        driggs_city varchar(255) NOT NULL,
+        driggs_brand_name_1 varchar(255) NOT NULL,
+        driggs_site_type_or_purpose text NOT NULL,
+        driggs_email_1 varchar(255) NOT NULL,
+        driggs_address_1 varchar(255) NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+    dbDelta($driggs_sql);
 }
 
 // Clean up on plugin deactivation (optional - remove if you want to keep the data)
@@ -752,11 +772,12 @@ function gurpo_db_viewer_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
+    echo '<div class="wrap">';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">DB Table Viewer</div>';
+    echo '<h1>DB Table Viewer gurpo_pageideas</h1>';
+    
     global $wpdb;
     $table_name = $wpdb->prefix . 'gurpo_pageideas';
-    
-    echo '<div class="wrap">';
-    echo '<h1>DB Table Viewer gurpo_pageideas</h1>';
     
     // Get all records from the table
     $records = $wpdb->get_results("SELECT * FROM $table_name ORDER BY order_for_display_on_interface_1 ASC");
