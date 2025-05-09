@@ -389,6 +389,8 @@ function gurpovich_injector2_page() {
                 const radios = row.querySelectorAll("input[type=radio]");
                 const select = row.querySelector("select");
                 const textarea = row.querySelector("textarea");
+                const refreshBtn = row.querySelector(".temprex-refresh-btn");
+                const temprexInput = row.querySelector(".temprex-txt");
                 
                 if (radios && select) {
                     // Set initial state
@@ -422,6 +424,42 @@ function gurpovich_injector2_page() {
                             radios[0].checked = true;
                             if (textarea) textarea.disabled = false;
                         }
+                    });
+                }
+
+                // Handle temprex refresh button
+                if (refreshBtn && select && temprexInput) {
+                    refreshBtn.addEventListener("click", function() {
+                        var postId = select.value;
+                        if (!postId) {
+                            alert("Please select a page to scrape.");
+                            return;
+                        }
+                        refreshBtn.disabled = true;
+                        refreshBtn.innerHTML = "...";
+                        var data = new FormData();
+                        data.append("action", "gurpo_scrape_temprex");
+                        data.append("post_id", postId);
+                        fetch(ajaxurl, {
+                            method: "POST",
+                            credentials: "same-origin",
+                            body: data
+                        })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                temprexInput.value = result.data.temprex;
+                            } else {
+                                alert("Error: " + result.data);
+                            }
+                        })
+                        .catch(() => {
+                            alert("AJAX error");
+                        })
+                        .finally(() => {
+                            refreshBtn.disabled = false;
+                            refreshBtn.innerHTML = "\u21bb";
+                        });
                     });
                 }
             });
@@ -698,4 +736,22 @@ function scrape_temprex_from_existing_page($post_id) {
     update_post_meta($post_id, 'gurpo_temprex_of_shortcodes', $shortcode_list);
     return true;
 }
+
+// AJAX handler for scraping temprex from existing page
+add_action('wp_ajax_gurpo_scrape_temprex', function() {
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('Permission denied');
+    }
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    if (!$post_id) {
+        wp_send_json_error('No post ID provided');
+    }
+    $result = scrape_temprex_from_existing_page($post_id);
+    if ($result === true) {
+        $temprex = get_post_meta($post_id, 'gurpo_temprex_of_shortcodes', true);
+        wp_send_json_success(['temprex' => $temprex]);
+    } else {
+        wp_send_json_error($result);
+    }
+});
 ?>
