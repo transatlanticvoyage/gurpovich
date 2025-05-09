@@ -354,7 +354,9 @@ function gurpovich_injector2_page() {
                     <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="default" style="width: 20px; height: 20px;">
                 </td>
                 <td>Use assigned default</td>
-                <td class="vertical-sep">' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
+                <td class="vertical-sep">' .
+                    '<input type="text" name="rel_wp_post_id_1_' . esc_attr($pageidea->id) . '" value="' . esc_attr($pageidea->rel_wp_post_id_1) . '" style="width:30px; text-align:center;" />'
+                . '</td>
                 <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
                 <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea($prexnar1_content) . '</textarea></td>
                 <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
