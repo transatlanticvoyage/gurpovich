@@ -755,4 +755,83 @@ function handle_fillernar_prompt() {
     }
 }
 add_action('admin_init', 'handle_fillernar_prompt');
+
+// Add meta box to post/page editor
+add_action('add_meta_boxes', 'gurpovich_add_indivinar_meta_box');
+function gurpovich_add_indivinar_meta_box() {
+    add_meta_box(
+        'gurpovich_indivinar_rectangle_1',
+        'Gurpovich Indivinar Rectangle 1',
+        'gurpovich_indivinar_meta_box_callback',
+        ['post', 'page'],
+        'side',
+        'high'
+    );
+}
+
+// Meta box callback function
+function gurpovich_indivinar_meta_box_callback($post) {
+    wp_nonce_field('gurpovich_indivinar_action', 'gurpovich_indivinar_nonce');
+    ?>
+    <div style="padding: 10px 0;">
+        <button type="button" id="scrape-temprex-button" class="button button-primary" style="width: 100%; margin-bottom: 10px;">
+            scrape_temprex_from_existing_page
+        </button>
+    </div>
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('#scrape-temprex-button').on('click', function() {
+            var button = $(this);
+            button.prop('disabled', true).text('Scraping...');
+            
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'gurpovich_scrape_temprex',
+                    post_id: <?php echo $post->ID; ?>,
+                    nonce: $('#gurpovich_indivinar_nonce').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Temprex scraped successfully!');
+                    } else {
+                        alert('Error: ' + response.data);
+                    }
+                },
+                error: function() {
+                    alert('AJAX error occurred');
+                },
+                complete: function() {
+                    button.prop('disabled', false).text('scrape_temprex_from_existing_page');
+                }
+            });
+        });
+    });
+    </script>
+    <?php
+}
+
+// AJAX handler for scraping temprex
+add_action('wp_ajax_gurpovich_scrape_temprex', function() {
+    if (!current_user_can('edit_posts')) {
+        wp_send_json_error('Permission denied');
+    }
+    
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'gurpovich_indivinar_action')) {
+        wp_send_json_error('Invalid nonce');
+    }
+    
+    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    if (!$post_id) {
+        wp_send_json_error('Invalid post ID');
+    }
+    
+    $result = scrape_temprex_from_existing_page($post_id);
+    if ($result === true) {
+        wp_send_json_success('Temprex scraped successfully');
+    } else {
+        wp_send_json_error($result);
+    }
+});
 ?>
