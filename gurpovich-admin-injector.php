@@ -53,8 +53,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Screen 5',
-        'Screen 5',
+        'Screen 5 - Footer',
+        'Screen 5 - Footer',
         'manage_options',
         'gurposcreen5',
         'gurpo_screen5_page'
@@ -743,7 +743,9 @@ function gurpo_screen5_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 5</div><h1>Gurpo Screen 5</h1></div>';
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 5 - Footer</div><h1>Gurpo Screen 5</h1>';
+    echo '<div style="margin-top:20px; font-size:1.1em;">new custom system</div>';
+    echo '</div>';
 }
 
 function gurpo_screen6_page() {
