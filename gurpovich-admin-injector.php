@@ -667,6 +667,17 @@ function gurpo_screen3_page() {
         $temprex2_content = isset($_POST['temprex_2_cached_by_hand']) ? $_POST['temprex_2_cached_by_hand'] : '';
         update_post_meta($selected_page_id, 'gurpo_temprex_2_cached_by_hand', $temprex2_content);
         $feedback = '<div style="background:#4a2c2a;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Temprex 2 cached successfully.</div>';
+    } elseif (isset($_POST['scrape_temprex_fresh'])) {
+        // Handle scrape temprex fresh
+        $result = scrape_temprex_from_existing_page($selected_page_id);
+        if ($result === true) {
+            $feedback = '<div style="background:#6c2eb7;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Temprex scraped successfully.</div>';
+        } else {
+            $feedback = '<div style="background:#b72e2e;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Error: ' . esc_html($result) . '</div>';
+        }
+        // Refresh value after update
+        $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true);
+        $prexnar1 = get_post_meta($selected_page_id, 'gurpo_prexnar1', true);
     } else {
         $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true) : '';
         $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
