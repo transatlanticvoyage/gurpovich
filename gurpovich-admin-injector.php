@@ -238,14 +238,8 @@ function gurpovich_injector2_page() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'gurpo_pageideas';
         
-        // Clear all rel_wp_post_id_1 values
-        $result = $wpdb->update(
-            $table_name,
-            array('rel_wp_post_id_1' => NULL),
-            array(),
-            array('%s'),
-            array()
-        );
+        // Clear all rel_wp_post_id_1 values using a direct SQL query
+        $result = $wpdb->query("UPDATE $table_name SET rel_wp_post_id_1 = NULL");
         
         if ($result !== false) {
             echo '<div class="updated"><p>All Post IDs have been cleared.</p></div>';
