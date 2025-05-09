@@ -692,7 +692,7 @@ function gurpo_db_viewer_page() {
 }
 
 /**
- * Fetches the frontend HTML of a given post/page, extracts all [g_...] shortcodes in order,
+ * Fetches the Elementor JSON data of a given post/page, extracts all [g_...] shortcodes and g_... keys/values in order,
  * and stores them (one per line) in the custom field gurpo_temprex_of_shortcodes for that post/page.
  *
  * @param int $post_id The ID of the post/page to scrape.
@@ -702,27 +702,40 @@ function scrape_temprex_from_existing_page($post_id) {
     if (empty($post_id) || !get_post($post_id)) {
         return 'Invalid post ID.';
     }
-    $url = get_permalink($post_id);
-    if (!$url) {
-        return 'Could not get permalink.';
+    $elementor_data = get_post_meta($post_id, '_elementor_data', true);
+    if (empty($elementor_data)) {
+        return 'No Elementor data found.';
     }
-    $response = wp_remote_get($url);
-    if (is_wp_error($response)) {
-        return 'Error fetching page: ' . $response->get_error_message();
+    $elements = is_string($elementor_data) ? json_decode($elementor_data, true) : $elementor_data;
+    if (!is_array($elements)) {
+        return 'Could not decode Elementor data.';
     }
-    $html = wp_remote_retrieve_body($response);
-    if (empty($html)) {
-        return 'Empty page content.';
-    }
-    // Find all [g_...] shortcodes in order of appearance
-    preg_match_all('/\[g_[a-zA-Z0-9_]+\]/', $html, $matches);
-    if (empty($matches[0])) {
-        $shortcode_list = '';
-    } else {
-        // Remove duplicates, keep order
-        $shortcodes = array_unique($matches[0]);
-        $shortcode_list = implode("\n", $shortcodes);
-    }
+    $matches = array();
+    // Recursive function to search for g_... patterns
+    $find_g_patterns = function($data) use (&$find_g_patterns, &$matches) {
+        if (is_array($data)) {
+            foreach ($data as $value) {
+                $find_g_patterns($value);
+            }
+        } elseif (is_string($data)) {
+            // Match [g_...] shortcodes
+            if (preg_match_all('/\[g_[a-zA-Z0-9_]+\]/', $data, $m1)) {
+                foreach ($m1[0] as $shortcode) {
+                    $matches[] = $shortcode;
+                }
+            }
+            // Match g_... words (not in brackets)
+            if (preg_match_all('/\bg_[a-zA-Z0-9_]+\b/', $data, $m2)) {
+                foreach ($m2[0] as $gword) {
+                    $matches[] = $gword;
+                }
+            }
+        }
+    };
+    $find_g_patterns($elements);
+    // Remove duplicates, keep order
+    $matches = array_values(array_unique($matches));
+    $shortcode_list = implode("\n", $matches);
     update_post_meta($post_id, 'gurpo_temprex_of_shortcodes', $shortcode_list);
     return true;
 }
