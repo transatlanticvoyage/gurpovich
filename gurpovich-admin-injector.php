@@ -997,7 +997,9 @@ function function_inject_content_replace_shortcodes_1($post_id, $zeeprex_submit_
             return $data;
         } elseif (is_string($data)) {
             foreach ($map as $shortcode => $content) {
-                $data = str_replace($shortcode, $content, $data);
+                // Replace both [g_shortcode] and g_shortcode (no brackets)
+                $shortcode_no_brackets = trim($shortcode, '[]');
+                $data = str_replace([$shortcode, $shortcode_no_brackets], $content, $data);
             }
             return $data;
         } else {
