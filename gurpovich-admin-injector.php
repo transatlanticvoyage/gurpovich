@@ -266,24 +266,34 @@ function gurpovich_injector2_page() {
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'gurpo_pageideas';
-    $pageideas = $wpdb->get_results("SELECT * FROM $table_name ORDER BY order_for_display_on_interface_1 ASC");
+    
+    // Get all pageideas ordered by order_for_display_on_interface_1
+    $pageideas = $wpdb->get_results("
+        SELECT * 
+        FROM $table_name 
+        ORDER BY order_for_display_on_interface_1 ASC
+    ");
 
-    foreach ($pageideas as $pageidea) {
-        echo '<tr>
-            <td style="border-right: 2px solid #000000;"><strong>' . esc_html($pageidea->name) . '</strong></td>
-            <td>
-                <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '">
-                    <option value="">select a page</option>
-                    <!-- Populate with WP pages if needed -->
-                </select>
-            </td>
-            <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
-            <td>Use assigned default</td>
-            <td>' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
-            <td>
-                <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
-            </td>
-        </tr>';
+    if ($pageideas) {
+        foreach ($pageideas as $pageidea) {
+            echo '<tr>
+                <td style="border-right: 2px solid #000000;"><strong>' . esc_html($pageidea->name) . '</strong></td>
+                <td>
+                    <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '">
+                        <option value="">select a page</option>
+                        <!-- Populate with WP pages if needed -->
+                    </select>
+                </td>
+                <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
+                <td>Use assigned default</td>
+                <td>' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
+                <td>
+                    <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
+                </td>
+            </tr>';
+        }
+    } else {
+        echo '<tr><td colspan="6">No pageideas found in the database.</td></tr>';
     }
     echo '</tbody></table>';
 
