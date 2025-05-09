@@ -259,7 +259,8 @@ function gurpovich_injector2_page() {
             <th colspan="2" style="text-align:center; color: #000000; font-weight: bold; text-transform: lowercase;">select a page</th>
             <th style="color: #000000; font-weight: bold; text-transform: lowercase;">use assigned default</th>
             <th style="color: #000000; font-weight: bold; text-transform: lowercase;">rel_wp_post_id_1</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;"></th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;"></th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">prexnar1</th>
         </tr>
     </thead>
     <tbody>';
@@ -286,6 +287,12 @@ function gurpovich_injector2_page() {
 
     if ($pageideas) {
         foreach ($pageideas as $pageidea) {
+            // Get the prexnar1 content if a post ID exists
+            $prexnar1_content = '';
+            if (!empty($pageidea->rel_wp_post_id_1)) {
+                $prexnar1_content = get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar1', true);
+            }
+
             echo '<tr>
                 <td style="border-right: 2px solid #000000;"><strong>' . esc_html($pageidea->name) . '</strong></td>
                 <td style="width: 50px; text-align: center;">
@@ -305,24 +312,25 @@ function gurpovich_injector2_page() {
                     <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="default" style="width: 20px; height: 20px;">
                 </td>
                 <td>Use assigned default</td>
-                <td>' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
+                <td style="border-right: 2px solid #000000;">' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
                 <td>
-                    <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
+                    <textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4" style="width: 100%;">' . esc_textarea($prexnar1_content) . '</textarea>
                 </td>
             </tr>';
         }
     } else {
-        echo '<tr><td colspan="8">No pageideas found in the database.</td></tr>';
+        echo '<tr><td colspan="9">No pageideas found in the database.</td></tr>';
     }
     echo '</tbody></table>';
 
-    // Add JavaScript to handle radio button selection
+    // Add JavaScript to handle radio button selection and prexnar1 content
     echo '<script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
             const rows = document.querySelectorAll("tr");
             rows.forEach(row => {
                 const radios = row.querySelectorAll("input[type=radio]");
                 const select = row.querySelector("select");
+                const textarea = row.querySelector("textarea");
                 
                 if (radios && select) {
                     // Set initial state
@@ -330,6 +338,7 @@ function gurpovich_injector2_page() {
                         radios[0].checked = true;
                     } else {
                         radios[1].checked = true;
+                        if (textarea) textarea.disabled = true;
                     }
                     
                     // Handle radio changes
@@ -337,9 +346,14 @@ function gurpovich_injector2_page() {
                         radio.addEventListener("change", function() {
                             if (this.value === "custom") {
                                 select.disabled = false;
+                                if (textarea) textarea.disabled = false;
                             } else {
                                 select.disabled = true;
                                 select.value = "";
+                                if (textarea) {
+                                    textarea.disabled = true;
+                                    textarea.value = "";
+                                }
                             }
                         });
                     });
@@ -348,6 +362,7 @@ function gurpovich_injector2_page() {
                     select.addEventListener("change", function() {
                         if (this.value) {
                             radios[0].checked = true;
+                            if (textarea) textarea.disabled = false;
                         }
                     });
                 }
