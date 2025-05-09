@@ -708,10 +708,10 @@ function gurpo_screen3_page() {
     echo '<tr><td colspan="2" style="padding-bottom:10px;">';
     echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">scrape temprex fresh</button>';
     echo '</td></tr>';
-    echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td colspan="2">';
+    echo '<tr><th><label for="temprex_1_scraped">temprex_1_scraped</label></th><td colspan="2">';
     echo '<div style="display:flex;gap:18px;">';
     // Main temprex box
-    echo '<textarea id="temprex_of_shortcodes" name="temprex_of_shortcodes" style="width: 400px; height: 250px;" readonly>' . esc_textarea($temprex) . '</textarea>';
+    echo '<textarea id="temprex_1_scraped" name="temprex_1_scraped" style="width: 400px; height: 250px;" readonly>' . esc_textarea($temprex) . '</textarea>';
     // Bracketed version
     $temprex_lines = preg_split('/\r\n|\r|\n/', $temprex);
     $temprex_bracketed = '';
@@ -726,7 +726,29 @@ function gurpo_screen3_page() {
             }
         }
     }
-    echo '<textarea id="temprex_of_shortcodes_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex_bracketed)) . '</textarea>';
+    echo '<textarea id="temprex_1_scraped_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex_bracketed)) . '</textarea>';
+    echo '</div>';
+    echo '</td></tr>';
+    // Add new temprex_2_cached_by_hand section
+    echo '<tr><th><label for="temprex_2_cached_by_hand">temprex_2_cached_by_hand</label></th><td colspan="2">';
+    echo '<div style="display:flex;gap:18px;">';
+    // Main temprex box
+    echo '<textarea id="temprex_2_cached_by_hand" name="temprex_2_cached_by_hand" style="width: 400px; height: 250px;">' . esc_textarea(get_post_meta($selected_page_id, 'gurpo_temprex_2_cached_by_hand', true)) . '</textarea>';
+    // Bracketed version
+    $temprex2_lines = preg_split('/\r\n|\r|\n/', get_post_meta($selected_page_id, 'gurpo_temprex_2_cached_by_hand', true));
+    $temprex2_bracketed = '';
+    foreach ($temprex2_lines as $line) {
+        $trimmed = trim($line);
+        if ($trimmed !== '') {
+            // Only add brackets if not already present
+            if (preg_match('/^\[.*\]$/', $trimmed)) {
+                $temprex2_bracketed .= $trimmed . "\n";
+            } else {
+                $temprex2_bracketed .= '[' . $trimmed . "]\n";
+            }
+        }
+    }
+    echo '<textarea id="temprex_2_cached_by_hand_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex2_bracketed)) . '</textarea>';
     echo '</div>';
     echo '</td></tr>';
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
