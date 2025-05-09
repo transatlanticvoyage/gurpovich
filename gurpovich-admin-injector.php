@@ -288,16 +288,20 @@ function gurpovich_injector2_page() {
     echo '<table class="widefat fixed gurpo-table" style="width:100%; min-width:1100px;">';
     echo '<thead>
         <tr>
-            <th class="vertical-sep" style="width:120px;">pageidea</th>
-            <th class="radio-col"> </th>
-            <th style="min-width:200px;">select a page</th>
-            <th class="vertical-sep or-col">OR</th>
-            <th class="radio-col"> </th>
-            <th style="min-width:120px;">use assigned default</th>
-            <th class="vertical-sep" style="min-width:90px;">rel_wp_post_id_1</th>
-            <th style="min-width:120px;">zeeprex_submit</th>
-            <th style="min-width:220px;">prexnar1</th>
-            <th class="button-col"></th>
+            <th class="vertical-sep" style="background: #b6f5b6; color: #222; font-weight: bold; text-transform: lowercase; text-align: center; font-size: 1.1em;" colspan="8">choose a target page for injection</th>
+            <th style="background: #f5f5f5;"></th>
+        </tr>
+        <tr>
+            <th class="vertical-sep" style="width:120px; font-weight:bold;">pageidea</th>
+            <th class="radio-col" style="font-weight:bold;"> </th>
+            <th style="min-width:200px; font-weight:bold;">select a page</th>
+            <th class="vertical-sep or-col" style="font-weight:bold;">OR</th>
+            <th class="radio-col" style="font-weight:bold;"> </th>
+            <th style="min-width:120px; font-weight:bold;">use assigned default</th>
+            <th class="vertical-sep" style="min-width:90px; font-weight:bold;">rel_wp_post_id_1</th>
+            <th style="min-width:120px; font-weight:bold;">zeeprex_submit</th>
+            <th style="min-width:220px; font-weight:bold;">prexnar1</th>
+            <th class="button-col" style="font-weight:bold;"></th>
         </tr>
     </thead>
     <tbody>';
