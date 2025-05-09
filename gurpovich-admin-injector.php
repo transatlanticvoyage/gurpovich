@@ -272,6 +272,27 @@ function gurpovich_injector2_page() {
         .gurpo-table .button-col {
             min-width: 170px;
         }
+        .gurpo-table .temprex-txt {
+            width: 70px;
+            min-width: 70px;
+            max-width: 70px;
+            display: inline-block;
+        }
+        .gurpo-table .temprex-refresh-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-size: 18px;
+            width: 28px;
+            height: 28px;
+            margin-left: 4px;
+            cursor: pointer;
+            vertical-align: middle;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>';
     echo '<table class="widefat fixed gurpo-table" style="width:100%; min-width:1100px;">';
     echo '<thead>
@@ -346,7 +367,10 @@ function gurpovich_injector2_page() {
                 <td class="vertical-sep">' .
                     '<input type="text" name="rel_wp_post_id_1_' . esc_attr($pageidea->id) . '" value="' . esc_attr($pageidea->rel_wp_post_id_1) . '" style="width:35px; text-align:center;" />'
                 . '</td>
-                <td class="vertical-sep"><input type="text" name="temprex_of_shortcodes_' . esc_attr($pageidea->id) . '" value="' . esc_attr($temprex_content) . '" style="width:100%;" /></td>
+                <td class="vertical-sep">
+                    <input type="text" class="temprex-txt" name="temprex_of_shortcodes_' . esc_attr($pageidea->id) . '" value="' . esc_attr($temprex_content) . '" />
+                    <button type="button" class="temprex-refresh-btn" title="Refresh temprex_of_shortcodes">&#x21bb;</button>
+                </td>
                 <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
                 <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea(get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar1', true)) . '</textarea></td>
                 <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
@@ -637,5 +661,41 @@ function gurpo_db_viewer_page() {
     }
     
     echo '</div>';
+}
+
+/**
+ * Fetches the frontend HTML of a given post/page, extracts all [g_...] shortcodes in order,
+ * and stores them (one per line) in the custom field gurpo_temprex_of_shortcodes for that post/page.
+ *
+ * @param int $post_id The ID of the post/page to scrape.
+ * @return bool|string True on success, error message on failure.
+ */
+function scrape_temprex_from_existing_page($post_id) {
+    if (empty($post_id) || !get_post($post_id)) {
+        return 'Invalid post ID.';
+    }
+    $url = get_permalink($post_id);
+    if (!$url) {
+        return 'Could not get permalink.';
+    }
+    $response = wp_remote_get($url);
+    if (is_wp_error($response)) {
+        return 'Error fetching page: ' . $response->get_error_message();
+    }
+    $html = wp_remote_retrieve_body($response);
+    if (empty($html)) {
+        return 'Empty page content.';
+    }
+    // Find all [g_...] shortcodes in order of appearance
+    preg_match_all('/\[g_[a-zA-Z0-9_]+\]/', $html, $matches);
+    if (empty($matches[0])) {
+        $shortcode_list = '';
+    } else {
+        // Remove duplicates, keep order
+        $shortcodes = array_unique($matches[0]);
+        $shortcode_list = implode("\n", $shortcodes);
+    }
+    update_post_meta($post_id, 'gurpo_temprex_of_shortcodes', $shortcode_list);
+    return true;
 }
 ?>
