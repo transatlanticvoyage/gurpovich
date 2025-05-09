@@ -276,7 +276,7 @@ function gurpovich_injector2_page() {
     echo '<thead>
         <tr>
             <th class="vertical-sep" style="background: #f5f5f5;"></th>
-            <th colspan="7" style="background: #b6f5b6; color: #222; font-weight: bold; text-transform: lowercase; text-align: center; font-size: 1.1em;">choose a target page for injection</th>
+            <th colspan="8" style="background: #b6f5b6; color: #222; font-weight: bold; text-transform: lowercase; text-align: center; font-size: 1.1em;">choose a target page for injection</th>
             <th style="background: #f5f5f5;"></th>
         </tr>
         <tr>
@@ -287,6 +287,7 @@ function gurpovich_injector2_page() {
             <th class="radio-col" style="font-weight:bold;"> </th>
             <th style="min-width:120px; font-weight:bold;">use assigned default</th>
             <th class="vertical-sep" style="min-width:90px; font-weight:bold;">rel_wp_post_id_1</th>
+            <th style="min-width:120px; font-weight:bold;">temprex_of_shortcodes</th>
             <th style="min-width:120px; font-weight:bold;">zeeprex_submit</th>
             <th style="min-width:220px; font-weight:bold;">prexnar1</th>
             <th class="button-col" style="font-weight:bold;"></th>
@@ -316,10 +317,10 @@ function gurpovich_injector2_page() {
 
     if ($pageideas) {
         foreach ($pageideas as $pageidea) {
-            // Get the prexnar1 content if a post ID exists
-            $prexnar1_content = '';
+            // Get the temprex_of_shortcodes content if a post ID exists
+            $temprex_content = '';
             if (!empty($pageidea->rel_wp_post_id_1)) {
-                $prexnar1_content = get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar1', true);
+                $temprex_content = get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_temprex_of_shortcodes', true);
             }
 
             echo '<tr>
@@ -344,8 +345,9 @@ function gurpovich_injector2_page() {
                 <td class="vertical-sep">' .
                     '<input type="text" name="rel_wp_post_id_1_' . esc_attr($pageidea->id) . '" value="' . esc_attr($pageidea->rel_wp_post_id_1) . '" style="width:35px; text-align:center;" />'
                 . '</td>
+                <td><input type="text" name="temprex_of_shortcodes_' . esc_attr($pageidea->id) . '" value="' . esc_attr($temprex_content) . '" style="width:100%;" /></td>
                 <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
-                <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea($prexnar1_content) . '</textarea></td>
+                <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea(get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar1', true)) . '</textarea></td>
                 <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
             </tr>';
         }
