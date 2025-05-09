@@ -253,20 +253,21 @@ function gurpovich_injector2_page() {
             width: 100%;
         }
         .gurpo-table select {
-            min-width: 180px;
-            width: 100%;
+            min-width: 140px;
+            max-width: 140px;
+            width: 140px;
         }
         .gurpo-table .vertical-sep {
             border-right: 2px solid #000000;
         }
         .gurpo-table .or-col {
             background: #000; color: #fff; font-weight: bold; text-align: center;
-            min-width: 20px;
-            max-width: 26px;
-            width: 26px;
+            min-width: 30px;
+            max-width: 30px;
+            width: 30px;
         }
         .gurpo-table .radio-col {
-            width: 40px; text-align: center;
+            width: 28px; min-width: 28px; max-width: 28px; text-align: center; padding-left: 2px; padding-right: 2px;
         }
         .gurpo-table .button-col {
             min-width: 170px;
@@ -287,7 +288,7 @@ function gurpovich_injector2_page() {
             <th class="radio-col" style="font-weight:bold;"> </th>
             <th style="min-width:120px; font-weight:bold;">use assigned default</th>
             <th class="vertical-sep" style="min-width:90px; font-weight:bold;">rel_wp_post_id_1</th>
-            <th style="min-width:120px; font-weight:bold;">temprex_of_shortcodes</th>
+            <th class="vertical-sep" style="min-width:120px; font-weight:bold;">temprex_of_shortcodes</th>
             <th style="min-width:120px; font-weight:bold;">zeeprex_submit</th>
             <th style="min-width:220px; font-weight:bold;">prexnar1</th>
             <th class="button-col" style="font-weight:bold;"></th>
@@ -345,7 +346,7 @@ function gurpovich_injector2_page() {
                 <td class="vertical-sep">' .
                     '<input type="text" name="rel_wp_post_id_1_' . esc_attr($pageidea->id) . '" value="' . esc_attr($pageidea->rel_wp_post_id_1) . '" style="width:35px; text-align:center;" />'
                 . '</td>
-                <td><input type="text" name="temprex_of_shortcodes_' . esc_attr($pageidea->id) . '" value="' . esc_attr($temprex_content) . '" style="width:100%;" /></td>
+                <td class="vertical-sep"><input type="text" name="temprex_of_shortcodes_' . esc_attr($pageidea->id) . '" value="' . esc_attr($temprex_content) . '" style="width:100%;" /></td>
                 <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
                 <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea(get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar1', true)) . '</textarea></td>
                 <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
