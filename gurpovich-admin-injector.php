@@ -565,7 +565,52 @@ function gurpovich_injector2_page() {
 
 // Callback functions for the new pages
 function gurpo_screen3_page() {
-    echo '<div class="wrap"><h1>Gurpo Screen 3</h1></div>';
+    echo '<div class="wrap">';
+    echo '<h1>balarfi</h1>';
+    
+    // Get all published pages
+    $pages = get_posts([
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'title',
+        'order' => 'ASC'
+    ]);
+    
+    // Get selected page ID from GET or default to first page
+    $selected_page_id = isset($_GET['balarfi_page_id']) ? intval($_GET['balarfi_page_id']) : (isset($pages[0]) ? $pages[0]->ID : 0);
+    
+    // Get meta values for selected page
+    $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_of_shortcodes', true) : '';
+    $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
+    
+    echo '<form method="get" id="balarfi-form">';
+    echo '<input type="hidden" name="page" value="gurposcreen3" />';
+    echo '<table class="form-table"><tbody>';
+    echo '<tr><th><label for="balarfi_page_id">Select a page</label></th><td>';
+    echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="document.getElementById(\'balarfi-form\').submit();">';
+    foreach ($pages as $page) {
+        $selected = $selected_page_id == $page->ID ? 'selected' : '';
+        echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>[' . esc_html($page->ID) . '] ' . esc_html($page->post_title) . '</option>';
+    }
+    echo '</select>';
+    echo '</td></tr>';
+    
+    echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td>';
+    echo '<input type="text" id="temprex_of_shortcodes" name="temprex_of_shortcodes" value="' . esc_attr($temprex) . '" style="width: 400px;" readonly />';
+    echo '</td></tr>';
+    
+    echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
+    echo '<input type="text" id="zeeprex_submit" name="zeeprex_submit" value="" style="width: 400px;" readonly />';
+    echo '</td></tr>';
+    
+    echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
+    echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
+    echo '</td></tr>';
+    
+    echo '</tbody></table>';
+    echo '</form>';
+    echo '</div>';
 }
 
 function gurpo_screen4_page() {
