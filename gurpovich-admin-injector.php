@@ -44,8 +44,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Screen 4',
-        'Screen 4',
+        'Screen 4 - Driggs',
+        'Screen 4 - Driggs',
         'manage_options',
         'gurposcreen4',
         'gurpo_screen4_page'
@@ -657,7 +657,55 @@ function gurpo_screen4_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 4</div><h1>Gurpo Screen 4</h1></div>';
+    echo '<div class="wrap">';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 4 - Driggs</div>';
+    
+    global $wpdb;
+    $feedback = '';
+    if (isset($_POST['submit_driggs_fields_as_wafer'])) {
+        $raw = isset($_POST['driggs_wafer']) ? $_POST['driggs_wafer'] : '';
+        $lines = preg_split('/\r\n|\r|\n/', $raw);
+        $fields = [
+            'driggs_domain',
+            'driggs_industry',
+            'driggs_city',
+            'driggs_brand_name_1',
+            'driggs_site_type_or_purpose',
+            'driggs_email_1',
+            'driggs_address_1',
+            'driggs_phone1'
+        ];
+        $data = [];
+        $current = '';
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (in_array($line, $fields)) {
+                $current = $line;
+                $data[$current] = '';
+            } elseif ($current) {
+                $data[$current] .= ($data[$current] === '' ? '' : "\n") . $line;
+            }
+        }
+        // Only insert if at least driggs_domain is present
+        if (!empty($data['driggs_domain'])) {
+            $table = $wpdb->prefix . 'gurpo_driggs';
+            $insert_data = [];
+            foreach ($fields as $f) {
+                $insert_data[$f] = isset($data[$f]) ? $data[$f] : '';
+            }
+            $wpdb->insert($table, $insert_data);
+            $feedback = '<div style="background:#6c2eb7;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Driggs data saved successfully.</div>';
+        } else {
+            $feedback = '<div style="background:#b72e2e;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Error: driggs_domain is required.</div>';
+        }
+    }
+    echo $feedback;
+    echo '<form method="post">';
+    echo '<label for="driggs_wafer" style="font-weight:bold;">submit_driggs_fields_as_wafer</label><br />';
+    echo '<textarea id="driggs_wafer" name="driggs_wafer" style="width:250px;height:400px;"></textarea><br />';
+    echo '<button type="submit" name="submit_driggs_fields_as_wafer" style="background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:10px 30px;border:none;border-radius:4px;cursor:pointer;margin-top:20px;display:block;">submit_driggs_fields_as_wafer</button>';
+    echo '</form>';
+    echo '</div>';
 }
 
 function gurpo_screen5_page() {
@@ -752,6 +800,7 @@ function gurpovich_plugin_activation() {
         driggs_site_type_or_purpose text NOT NULL,
         driggs_email_1 varchar(255) NOT NULL,
         driggs_address_1 varchar(255) NOT NULL,
+        driggs_phone1 varchar(50) NOT NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
     dbDelta($driggs_sql);
