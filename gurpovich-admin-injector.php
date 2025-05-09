@@ -589,8 +589,14 @@ function gurpo_screen3_page() {
         'order' => 'ASC'
     ]);
     
-    // Get selected page ID from GET or default to first page
-    $selected_page_id = isset($_GET['balarfi_page_id']) ? intval($_GET['balarfi_page_id']) : (isset($pages[0]) ? $pages[0]->ID : 0);
+    // Get selected page ID from POST, GET, or default to first page
+    if (isset($_POST['balarfi_page_id'])) {
+        $selected_page_id = intval($_POST['balarfi_page_id']);
+    } elseif (isset($_GET['balarfi_page_id'])) {
+        $selected_page_id = intval($_GET['balarfi_page_id']);
+    } else {
+        $selected_page_id = isset($pages[0]) ? $pages[0]->ID : 0;
+    }
     
     // Handle form submission for shortcode injection
     $feedback = '';
