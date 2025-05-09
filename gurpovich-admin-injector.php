@@ -585,34 +585,24 @@ function gurpo_fillernar1_page() {
     echo '<h1>Fillernar - Special Custom Filler Content Update System</h1>';
     echo '<h2>Fillernar 1</h2>';
     echo '<div id="fillernar-content">';
-    
-    // Get the current fillernar content
+
+    // Get and display the current fillernar content
     $fillernar_content = get_option('gurpo_fillernar1_content', array());
-    
-    // Add the next number
-    $next_number = count($fillernar_content) + 1;
-    $fillernar_content[] = $next_number;
-    update_option('gurpo_fillernar1_content', $fillernar_content);
-    
-    // Display each number on a new line
-    foreach ($fillernar_content as $number) {
-        echo '<div class="fillernar-number">' . esc_html($number) . '</div>';
+    foreach ($fillernar_content as $item) {
+        echo '<div class="fillernar-number">' . esc_html($item) . '</div>';
     }
-    
+
     echo '</div>';
     echo '</div>';
 }
 
-// Handle Fillernar content updates
-add_action('admin_init', function() {
-    if (isset($_POST['fillernar_update']) && check_admin_referer('fillernar_update_nonce')) {
-        $fillernar_content = get_option('gurpo_fillernar1_content', array());
-        $fillernar_content[] = count($fillernar_content) + 1;
-        update_option('gurpo_fillernar1_content', $fillernar_content);
-        wp_redirect(admin_url('admin.php?page=gurpofillernar1'));
-        exit;
-    }
-});
+// Function to add a new number to Fillernar content
+function add_new_fillernar_number() {
+    $fillernar_content = get_option('gurpo_fillernar1_content', array());
+    $fillernar_content[] = count($fillernar_content) + 1;
+    update_option('gurpo_fillernar1_content', $fillernar_content);
+    return true;
+}
 
 // Create database table and insert default data on plugin activation
 register_activation_hook(__FILE__, 'gurpovich_plugin_activation');
@@ -754,4 +744,15 @@ add_action('wp_ajax_gurpo_scrape_temprex', function() {
         wp_send_json_error($result);
     }
 });
+
+// Function to handle Fillernar prompt
+function handle_fillernar_prompt() {
+    if (isset($_POST['fillernar_prompt']) && $_POST['fillernar_prompt'] === 'Fillernar - Special Custom Filler Content Update System. Hello cursor, please insert some new filler content on our fillernar page 1.') {
+        if (add_new_fillernar_number()) {
+            wp_redirect(admin_url('admin.php?page=gurpofillernar1'));
+            exit;
+        }
+    }
+}
+add_action('admin_init', 'handle_fillernar_prompt');
 ?>
