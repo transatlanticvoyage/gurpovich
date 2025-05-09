@@ -62,8 +62,8 @@ function gurpovich_injector_menu() {
 
     add_submenu_page(
         'gurposcreen1',
-        'Screen 6',
-        'Screen 6',
+        'Screen 6 - Logo',
+        'Screen 6 - Logo',
         'manage_options',
         'gurposcreen6',
         'gurpo_screen6_page'
@@ -85,6 +85,42 @@ function gurpovich_injector_menu() {
         'manage_options',
         'gurpo-db-viewer',
         'gurpo_db_viewer_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 14 - dralo dummy driggs',
+        'Screen 14 - dralo dummy driggs',
+        'manage_options',
+        'gurposcreen14',
+        'gurpo_screen14_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 15 - wafo dummy seo content',
+        'Screen 15 - wafo dummy seo content',
+        'manage_options',
+        'gurposcreen15',
+        'gurpo_screen15_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 0 - API Keys',
+        'Screen 0 - API Keys',
+        'manage_options',
+        'gurposcreen0',
+        'gurpo_screen0_page'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 20 - prompts',
+        'Screen 20 - prompts',
+        'manage_options',
+        'gurposcreen20',
+        'gurpo_screen20_page'
     );
 }
 
@@ -753,7 +789,7 @@ function gurpo_screen6_page() {
     add_action('admin_print_scripts', function() {
         echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
     }, 1);
-    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 6</div><h1>Gurpo Screen 6</h1></div>';
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 6 - Logo</div><h1>Gurpo Screen 6</h1></div>';
 }
 
 function gurpo_fillernar1_page() {
@@ -1114,5 +1150,69 @@ function function_inject_content_replace_shortcodes_1($post_id, $zeeprex_submit_
     // Save the submitted text in prexnar1 for reference
     update_post_meta($post_id, 'gurpo_prexnar1', $zeeprex_submit_text);
     return true;
+}
+
+function gurpo_screen14_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 14 - dralo dummy driggs</div><h1>Screen 14 - dralo dummy driggs</h1></div>';
+}
+
+function gurpo_screen15_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 15 - wafo dummy seo content</div><h1>Screen 15 - wafo dummy seo content</h1></div>';
+}
+
+function gurpo_screen0_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
+    $apis = [
+        'MidJourney' => 'gurpo_api_key_midjourney',
+        'ChatGPT' => 'gurpo_api_key_chatgpt',
+        'Grok' => 'gurpo_api_key_grok',
+        'Perplexity' => 'gurpo_api_key_perplexity',
+        'Gemini' => 'gurpo_api_key_gemini',
+    ];
+    $feedback = '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gurpo_api_key_save'])) {
+        $api_key_field = $_POST['gurpo_api_key_field'];
+        $api_key_value = sanitize_text_field($_POST['gurpo_api_key_value']);
+        update_option($api_key_field, $api_key_value);
+        $feedback = '<div style="background:#6c2eb7;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">API key saved!</div>';
+    }
+    echo '<div class="wrap">';
+    echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 0 - API Keys</div>';
+    echo '<h1>Screen 0 - API Keys</h1>';
+    echo $feedback;
+    echo '<div style="max-width:500px; background:#f8f8ff; border-radius:10px; box-shadow:0 2px 8px #eee; padding:30px 30px 20px 30px;">';
+    echo '<style>.gurpo-api-key-label{font-weight:bold;font-size:1.1em;margin-bottom:4px;display:block;} .gurpo-api-key-row{margin-bottom:28px;} .gurpo-api-key-input{width:80%;padding:8px 10px;border-radius:5px;border:1px solid #bbb;font-size:1em;} .gurpo-api-key-btn{background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-left:10px;} .gurpo-api-key-btn:active{background:#4b1e7a;}</style>';
+    foreach ($apis as $label => $option_name) {
+        $value = esc_attr(get_option($option_name, ''));
+        echo '<form method="post" class="gurpo-api-key-row" style="display:flex;align-items:center;">';
+        echo '<label class="gurpo-api-key-label" for="' . esc_attr($option_name) . '">' . esc_html($label) . ' API Key</label>';
+        echo '<input class="gurpo-api-key-input" type="text" id="' . esc_attr($option_name) . '" name="gurpo_api_key_value" value="' . $value . '" autocomplete="off" />';
+        echo '<input type="hidden" name="gurpo_api_key_field" value="' . esc_attr($option_name) . '" />';
+        echo '<button type="submit" name="gurpo_api_key_save" class="gurpo-api-key-btn">save</button>';
+        echo '</form>';
+    }
+    echo '</div>';
+    echo '</div>';
+}
+
+function gurpo_screen20_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
+    echo '<div class="wrap"><div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 20 - prompts</div><h1>Screen 20 - prompts</h1>';
+    echo '<div style="margin-top:20px; color:#444; font-size:1.08em; background:#f8f8ff; border-radius:6px; padding:14px 18px; max-width:600px;">NoteToSelfKarl: must build ability to copy prompts + driggs together - while ONLY viewing the prompt (driggs won\'t be cluttering screen)</div>';
+    echo '</div>';
 }
 ?>
