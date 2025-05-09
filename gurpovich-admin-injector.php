@@ -193,15 +193,70 @@ add_action('admin_menu', function() {
 function gurpovich_injector2_page() {
     echo '<h1>Gurpovich Injector - Main Screen 1</h1>';
     
+    // Add JavaScript for confirmation
+    echo '<script type="text/javascript">
+        function confirmClear() {
+            return confirm("Are you sure you want to clear all Post IDs? This action cannot be undone.");
+        }
+    </script>';
+    
     // Kardwaj Key Connector Section
     echo '<h2>Kardwaj Key Connector of Post ID</h2>';
     echo '<form method="post">';
     wp_nonce_field('kardwaj_action', 'kardwaj_nonce');
     echo '<p><input type="text" name="kardwaj_keys" id="kardwaj_keys" placeholder="Paste your key here: 484, 28, 05, 49, 402, 204" style="width:100%;max-width:500px;"></p>';
-    echo '<p><input type="submit" name="kardwaj_submit" class="button button-primary" value="Insert Post IDs Into Pageideas"></p>';
+    echo '<p>';
+    echo '<input type="submit" name="kardwaj_submit" class="button button-primary" value="Insert Post IDs Into Pageideas">';
+    echo '<input type="submit" name="kardwaj_clear" class="button" value="Clear Post IDs From Pageideas" style="background-color: #800000; color: white; margin-left: 10px;" onclick="return confirmClear();">';
+    echo '</p>';
     echo '</form>';
 
-    // Pageideas Section (renamed from Pages To Deal With)
+    // Process Kardwaj submission
+    if (isset($_POST['kardwaj_submit']) && check_admin_referer('kardwaj_action', 'kardwaj_nonce')) {
+        $keys = trim($_POST['kardwaj_keys']);
+        if (!empty($keys)) {
+            // Split the input into an array of numbers
+            $key_array = array_map('trim', explode(',', $keys));
+            
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'gurpo_pageideas';
+            
+            // Get all pageideas ordered by order_for_display_on_interface_1
+            $pageideas = $wpdb->get_results("SELECT * FROM $table_name ORDER BY order_for_display_on_interface_1 ASC");
+            
+            // Update each pageidea with its corresponding key
+            foreach ($pageideas as $index => $pageidea) {
+                if (isset($key_array[$index])) {
+                    $wpdb->update(
+                        $table_name,
+                        array('rel_wp_post_id_1' => $key_array[$index]),
+                        array('id' => $pageidea->id)
+                    );
+                }
+            }
+            
+            echo '<div class="updated"><p>Post IDs have been updated successfully.</p></div>';
+        }
+    }
+
+    // Handle clear button
+    if (isset($_POST['kardwaj_clear']) && check_admin_referer('kardwaj_action', 'kardwaj_nonce')) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'gurpo_pageideas';
+        
+        // Clear all rel_wp_post_id_1 values
+        $wpdb->update(
+            $table_name,
+            array('rel_wp_post_id_1' => NULL),
+            array(),
+            array('%s'),
+            array()
+        );
+        
+        echo '<div class="updated"><p>All Post IDs have been cleared.</p></div>';
+    }
+
+    // Pageideas Section
     echo '<h2>Pageideas</h2>';
     echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
     echo '<thead>
@@ -209,19 +264,19 @@ function gurpovich_injector2_page() {
             <th>Page</th>
             <th colspan="2" style="text-align:center;">Select a page</th>
             <th>Use assigned default</th>
-            <th>wp-post-id</th>
+            <th>rel_wp_post_id_1</th>
             <th></th>
         </tr>
     </thead>
     <tbody>';
 
     $pages = [
-        ['Home', 306],
-        ['Services', 208],
-        ['About', 188],
-        ['Contact', 234],
-        ['Privacy Policy', 126],
-        ['Modern Slavery', 260],
+        ['Home', ''],
+        ['Services', ''],
+        ['About', ''],
+        ['Contact', ''],
+        ['Privacy Policy', ''],
+        ['Modern Slavery', '']
     ];
 
     foreach ($pages as $page) {
@@ -358,10 +413,10 @@ function gurpo_db_viewer_page() {
         echo '<table class="wp-list-table widefat fixed striped">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th>ID</th>';
-        echo '<th>Order</th>';
-        echo '<th>Name</th>';
-        echo '<th>WP Post ID</th>';
+        echo '<th style="color: #000000; font-weight: bold;">id</th>';
+        echo '<th style="color: #000000; font-weight: bold;">order_for_display_on_interface_1</th>';
+        echo '<th style="color: #000000; font-weight: bold;">name</th>';
+        echo '<th style="color: #000000; font-weight: bold;">rel_wp_post_id_1</th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
