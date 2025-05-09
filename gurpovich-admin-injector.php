@@ -662,6 +662,11 @@ function gurpo_screen3_page() {
         // Refresh values after update
         $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true);
         $prexnar1 = get_post_meta($selected_page_id, 'gurpo_prexnar1', true);
+    } elseif (isset($_POST['cache_temprex_2'])) {
+        // Handle manual cache of temprex_2
+        $temprex2_content = isset($_POST['temprex_2_cached_by_hand']) ? $_POST['temprex_2_cached_by_hand'] : '';
+        update_post_meta($selected_page_id, 'gurpo_temprex_2_cached_by_hand', $temprex2_content);
+        $feedback = '<div style="background:#4a2c2a;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Temprex 2 cached successfully.</div>';
     } else {
         $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true) : '';
         $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
@@ -750,6 +755,9 @@ function gurpo_screen3_page() {
     }
     echo '<textarea id="temprex_2_cached_by_hand_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex2_bracketed)) . '</textarea>';
     echo '</div>';
+    // Add cache now button
+    echo '<tr><td colspan="2" style="padding-bottom:10px;">';
+    echo '<button type="submit" name="cache_temprex_2" style="background:#4a2c2a;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">cache now</button>';
     echo '</td></tr>';
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
     echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 320px;"></textarea>';
