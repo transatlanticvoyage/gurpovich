@@ -274,7 +274,9 @@ function gurpovich_injector2_page() {
         }
         .gurpo-table .or-col {
             background: #000; color: #fff; font-weight: bold; text-align: center;
-            min-width: 60px;
+            min-width: 20px;
+            max-width: 26px;
+            width: 26px;
         }
         .gurpo-table .radio-col {
             width: 40px; text-align: center;
@@ -293,6 +295,7 @@ function gurpovich_injector2_page() {
             <th class="radio-col"> </th>
             <th style="min-width:120px;">use assigned default</th>
             <th class="vertical-sep" style="min-width:90px;">rel_wp_post_id_1</th>
+            <th style="min-width:120px;">zeeprex_submit</th>
             <th style="min-width:220px;">prexnar1</th>
             <th class="button-col"></th>
         </tr>
@@ -347,6 +350,7 @@ function gurpovich_injector2_page() {
                 </td>
                 <td>Use assigned default</td>
                 <td class="vertical-sep">' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
+                <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
                 <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea($prexnar1_content) . '</textarea></td>
                 <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
             </tr>';
