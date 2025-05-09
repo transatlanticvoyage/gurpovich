@@ -668,30 +668,31 @@ function gurpo_screen3_page() {
     echo $feedback;
     echo '<form method="post" id="balarfi-form">';
     echo '<input type="hidden" name="page" value="gurposcreen3" />';
+    // Top HR
+    echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
     echo '<table class="form-table"><tbody>';
-    echo '<tr><th><label for="balarfi_page_id">Select a page</label></th><td>';
-    echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();">';
+    // Select a page row with radio
+    echo '<tr><th><label for="balarfi_page_id">Select a page</label></th><td style="display:flex;align-items:center;">';
+    echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();" style="margin-right:12px;">';
     foreach ($pages as $page) {
         $selected = $selected_page_id == $page->ID ? 'selected' : '';
         echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>[' . esc_html($page->ID) . '] ' . esc_html($page->post_title) . '</option>';
     }
     echo '</select>';
+    // Radio for select a page
+    $radio_selected = (!isset($_POST['kardwaj_radio']) || $_POST['kardwaj_radio'] === 'select') ? 'checked' : '';
+    echo '<input type="radio" name="kardwaj_radio" value="select" style="margin-left:8px;" ' . $radio_selected . ' onclick="this.form.submit();">';
     echo '</td></tr>';
-    
-    echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td>';
-    echo '<input type="text" id="temprex_of_shortcodes" name="temprex_of_shortcodes" value="' . esc_attr($temprex) . '" style="width: 400px;" readonly />';
+    // Use default kardwaj page row with radio
+    echo '<tr><th><label for="kardwaj_default">Use default kardwaj page</label></th><td style="display:flex;align-items:center;">';
+    // Disabled dropdown for visual alignment
+    echo '<input type="text" id="kardwaj_default" value="(default)" style="width:180px; margin-right:12px; background:#eee; color:#888; border:1px solid #ccc;" readonly />';
+    $radio_selected2 = (isset($_POST['kardwaj_radio']) && $_POST['kardwaj_radio'] === 'default') ? 'checked' : '';
+    echo '<input type="radio" name="kardwaj_radio" value="default" style="margin-left:8px;" ' . $radio_selected2 . ' onclick="this.form.submit();">';
     echo '</td></tr>';
-    
-    echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
-    echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 120px;">' . (isset($prexnar1) ? esc_textarea($prexnar1) : '') . '</textarea>';
-    echo '</td></tr>';
-    
-    echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
-    echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
-    echo '</td></tr>';
-    
     echo '</tbody></table>';
-    // Purple submit button
+    // Bottom HR
+    echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
     echo '<button type="submit" name="function_inject_content_replace_shortcodes_1_submit" style="background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:10px 30px;border:none;border-radius:4px;cursor:pointer;margin-top:20px;display:block;">function_inject_content_replace_shortcodes_1</button>';
     echo '</form>';
     echo '</div>';
@@ -1206,12 +1207,8 @@ function gurpo_screen0_page() {
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll(".gurpo-api-key-input").forEach(function(input) {
             var realValue = input.getAttribute("data-real-value");
-            function setDisplay() {
-                if (document.activeElement === input) {
-                    input.value = realValue;
-                    input.classList.remove("blank");
-                    input.classList.remove("asterisks");
-                } else if (!realValue) {
+            function setDisplayBlur() {
+                if (!realValue) {
                     input.value = "(blank)";
                     input.classList.add("blank");
                     input.classList.remove("asterisks");
@@ -1221,9 +1218,20 @@ function gurpo_screen0_page() {
                     input.classList.add("asterisks");
                 }
             }
-            setDisplay();
-            input.addEventListener("focus", setDisplay);
-            input.addEventListener("blur", setDisplay);
+            function setDisplayFocus() {
+                if (!realValue) {
+                    input.value = "";
+                    input.classList.add("blank");
+                    input.classList.remove("asterisks");
+                } else {
+                    input.value = realValue;
+                    input.classList.remove("blank");
+                    input.classList.remove("asterisks");
+                }
+            }
+            setDisplayBlur();
+            input.addEventListener("focus", setDisplayFocus);
+            input.addEventListener("blur", setDisplayBlur);
         });
     });
     </script>';
