@@ -592,15 +592,30 @@ function gurpo_screen3_page() {
     // Get selected page ID from GET or default to first page
     $selected_page_id = isset($_GET['balarfi_page_id']) ? intval($_GET['balarfi_page_id']) : (isset($pages[0]) ? $pages[0]->ID : 0);
     
-    // Get meta values for selected page
-    $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_of_shortcodes', true) : '';
-    $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
+    // Handle form submission for shortcode injection
+    $feedback = '';
+    if (isset($_POST['function_inject_content_replace_shortcodes_1_submit'])) {
+        $zeeprex_submit = isset($_POST['zeeprex_submit']) ? $_POST['zeeprex_submit'] : '';
+        $result = function_inject_content_replace_shortcodes_1($selected_page_id, $zeeprex_submit);
+        if ($result === true) {
+            $feedback = '<div style="background:#6c2eb7;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Shortcodes replaced and content injected successfully.</div>';
+        } else {
+            $feedback = '<div style="background:#b72e2e;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Error: ' . esc_html($result) . '</div>';
+        }
+        // Refresh values after update
+        $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_of_shortcodes', true);
+        $prexnar1 = get_post_meta($selected_page_id, 'gurpo_prexnar1', true);
+    } else {
+        $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_of_shortcodes', true) : '';
+        $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
+    }
     
-    echo '<form method="get" id="balarfi-form">';
+    echo $feedback;
+    echo '<form method="post" id="balarfi-form">';
     echo '<input type="hidden" name="page" value="gurposcreen3" />';
     echo '<table class="form-table"><tbody>';
     echo '<tr><th><label for="balarfi_page_id">Select a page</label></th><td>';
-    echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="document.getElementById(\'balarfi-form\').submit();">';
+    echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();">';
     foreach ($pages as $page) {
         $selected = $selected_page_id == $page->ID ? 'selected' : '';
         echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>[' . esc_html($page->ID) . '] ' . esc_html($page->post_title) . '</option>';
@@ -613,7 +628,7 @@ function gurpo_screen3_page() {
     echo '</td></tr>';
     
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
-    echo '<input type="text" id="zeeprex_submit" name="zeeprex_submit" value="" style="width: 400px;" readonly />';
+    echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 120px;">' . (isset($prexnar1) ? esc_textarea($prexnar1) : '') . '</textarea>';
     echo '</td></tr>';
     
     echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
@@ -621,6 +636,8 @@ function gurpo_screen3_page() {
     echo '</td></tr>';
     
     echo '</tbody></table>';
+    // Purple submit button
+    echo '<button type="submit" name="function_inject_content_replace_shortcodes_1_submit" style="background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:10px 30px;border:none;border-radius:4px;cursor:pointer;margin-top:20px;display:block;">function_inject_content_replace_shortcodes_1</button>';
     echo '</form>';
     echo '</div>';
 }
