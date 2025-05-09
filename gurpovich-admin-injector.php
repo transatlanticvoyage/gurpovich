@@ -670,7 +670,35 @@ function gurpo_screen3_page() {
     echo '<input type="hidden" name="page" value="gurposcreen3" />';
     // Top HR
     echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
-    // Restore previously existing fields
+    // Select a page row with radio
+    echo '<table class="form-table"><tbody>';
+    echo '<tr><th><label for="balarfi_page_id">Select a page</label></th><td style="display:flex;align-items:center;">';
+    echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();" style="margin-right:12px;">';
+    foreach ($pages as $page) {
+        $selected = $selected_page_id == $page->ID ? 'selected' : '';
+        echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>[' . esc_html($page->ID) . '] ' . esc_html($page->post_title) . '</option>';
+    }
+    echo '</select>';
+    $radio_selected = (!isset($_POST['kardwaj_radio']) || $_POST['kardwaj_radio'] === 'select') ? 'checked' : '';
+    echo '<input type="radio" name="kardwaj_radio" value="select" style="margin-left:8px;" ' . $radio_selected . ' onclick="this.form.submit();">';
+    echo '</td></tr>';
+    // Use default kardwaj page row with radio
+    echo '<tr><th><label for="kardwaj_default">Use default kardwaj page</label></th><td style="display:flex;align-items:center;">';
+    echo '<input type="text" id="kardwaj_default" value="(default)" style="width:180px; margin-right:12px; background:#eee; color:#888; border:1px solid #ccc;" readonly />';
+    $radio_selected2 = (isset($_POST['kardwaj_radio']) && $_POST['kardwaj_radio'] === 'default') ? 'checked' : '';
+    echo '<input type="radio" name="kardwaj_radio" value="default" style="margin-left:8px;" ' . $radio_selected2 . ' onclick="this.form.submit();">';
+    echo '</td></tr>';
+    // Type in a wp post id row with radio
+    echo '<tr><th><label for="manual_post_id">Type in a wp post id</label></th><td style="display:flex;align-items:center;">';
+    $manual_post_id = isset($_POST['manual_post_id']) ? esc_attr($_POST['manual_post_id']) : '';
+    echo '<input type="text" name="manual_post_id" id="manual_post_id" value="' . $manual_post_id . '" style="width:120px; margin-right:12px;" />';
+    $radio_selected3 = (isset($_POST['kardwaj_radio']) && $_POST['kardwaj_radio'] === 'manual') ? 'checked' : '';
+    echo '<input type="radio" name="kardwaj_radio" value="manual" style="margin-left:8px;" ' . $radio_selected3 . ' onclick="this.form.submit();">';
+    echo '</td></tr>';
+    echo '</tbody></table>';
+    // Second HR
+    echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
+    // The three fields
     echo '<table class="form-table"><tbody>';
     echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td>';
     echo '<input type="text" id="temprex_of_shortcodes" name="temprex_of_shortcodes" value="' . esc_attr($temprex) . '" style="width: 400px;" readonly />';
@@ -682,8 +710,9 @@ function gurpo_screen3_page() {
     echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
     echo '</td></tr>';
     echo '</tbody></table>';
-    // Bottom HR
+    // Third HR
     echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
+    // Submit button
     echo '<button type="submit" name="function_inject_content_replace_shortcodes_1_submit" style="background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:10px 30px;border:none;border-radius:4px;cursor:pointer;margin-top:20px;display:block;">function_inject_content_replace_shortcodes_1</button>';
     echo '</form>';
     echo '</div>';
