@@ -146,90 +146,6 @@ function gurpovich_injector_page() {
         }
     }
     
-    // Service Pages Section
-    echo '<h2>Service Pages</h2>';
-    echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
-    echo '<thead>
-        <tr>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;">pageidea</th>
-            <th colspan="2" style="text-align:center; color: #000000; font-weight: bold; text-transform: lowercase;">select a page</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">use assigned default</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">rel_wp_post_id_1</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;"></th>
-        </tr>
-    </thead>
-    <tbody>';
-
-    $service_pages = [
-        ['Service 1', ''],
-        ['Service 2', ''],
-        ['Service 3', ''],
-        ['Service 4', ''],
-        ['Service 5', '']
-    ];
-
-    foreach ($service_pages as $page) {
-        list($label, $post_id) = $page;
-        echo '<tr>
-            <td style="border-right: 2px solid #000000;"><strong>' . esc_html($label) . '</strong></td>
-            <td>
-                <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $label))) . '">
-                    <option value="">select a page</option>
-                    <!-- Populate with WP pages if needed -->
-                </select>
-            </td>
-            <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
-            <td>Use assigned default</td>
-            <td>' . esc_html($post_id) . '</td>
-            <td>
-                <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
-            </td>
-        </tr>';
-    }
-    echo '</tbody></table>';
-
-    // Blog Posts Section
-    echo '<h2>Blog Posts</h2>';
-    echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
-    echo '<thead>
-        <tr>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;">pageidea</th>
-            <th colspan="2" style="text-align:center; color: #000000; font-weight: bold; text-transform: lowercase;">select a page</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">use assigned default</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">rel_wp_post_id_1</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;"></th>
-        </tr>
-    </thead>
-    <tbody>';
-
-    $blog_posts = [
-        ['Blog Post 1', ''],
-        ['Blog Post 2', ''],
-        ['Blog Post 3', ''],
-        ['Blog Post 4', ''],
-        ['Blog Post 5', '']
-    ];
-
-    foreach ($blog_posts as $page) {
-        list($label, $post_id) = $page;
-        echo '<tr>
-            <td style="border-right: 2px solid #000000;"><strong>' . esc_html($label) . '</strong></td>
-            <td>
-                <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $label))) . '">
-                    <option value="">select a page</option>
-                    <!-- Populate with WP pages if needed -->
-                </select>
-            </td>
-            <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
-            <td>Use assigned default</td>
-            <td>' . esc_html($post_id) . '</td>
-            <td>
-                <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
-            </td>
-        </tr>';
-    }
-    echo '</tbody></table>';
-    
     echo '</div>';
 }
 
@@ -348,17 +264,59 @@ function gurpovich_injector2_page() {
     </thead>
     <tbody>';
 
-    $pages = [
-        ['Home', ''],
-        ['Services', ''],
-        ['About', ''],
-        ['Contact', ''],
-        ['Privacy Policy', ''],
-        ['Modern Slavery', '']
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'gurpo_pageideas';
+    $pageideas = $wpdb->get_results("SELECT * FROM $table_name ORDER BY order_for_display_on_interface_1 ASC");
+
+    foreach ($pageideas as $pageidea) {
+        echo '<tr>
+            <td style="border-right: 2px solid #000000;"><strong>' . esc_html($pageidea->name) . '</strong></td>
+            <td>
+                <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '">
+                    <option value="">select a page</option>
+                    <!-- Populate with WP pages if needed -->
+                </select>
+            </td>
+            <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
+            <td>Use assigned default</td>
+            <td>' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
+            <td>
+                <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
+            </td>
+        </tr>';
+    }
+    echo '</tbody></table>';
+
+    // Service Pages Section
+    echo '<h2>Service Pages</h2>';
+    echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
+    echo '<thead>
+        <tr>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;">pageidea</th>
+            <th colspan="2" style="text-align:center; color: #000000; font-weight: bold; text-transform: lowercase;">select a page</th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">use assigned default</th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">rel_wp_post_id_1</th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;"></th>
+        </tr>
+    </thead>
+    <tbody>';
+
+    $service_pages = [
+        ['Service 1', ''],
+        ['Service 2', ''],
+        ['Service 3', ''],
+        ['Service 4', ''],
+        ['Service 5', '']
     ];
 
-    foreach ($pages as $page) {
+    foreach ($service_pages as $page) {
         list($label, $post_id) = $page;
+        // Get the current post ID from the database
+        $current_post_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT rel_wp_post_id_1 FROM $table_name WHERE name = %s",
+            $label
+        ));
+        
         echo '<tr>
             <td style="border-right: 2px solid #000000;"><strong>' . esc_html($label) . '</strong></td>
             <td>
@@ -369,13 +327,60 @@ function gurpovich_injector2_page() {
             </td>
             <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
             <td>Use assigned default</td>
-            <td>' . esc_html($post_id) . '</td>
+            <td>' . esc_html($current_post_id) . '</td>
             <td>
                 <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
             </td>
         </tr>';
     }
+    echo '</tbody></table>';
 
+    // Blog Posts Section
+    echo '<h2>Blog Posts</h2>';
+    echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
+    echo '<thead>
+        <tr>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;">pageidea</th>
+            <th colspan="2" style="text-align:center; color: #000000; font-weight: bold; text-transform: lowercase;">select a page</th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">use assigned default</th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">rel_wp_post_id_1</th>
+            <th style="color: #000000; font-weight: bold; text-transform: lowercase;"></th>
+        </tr>
+    </thead>
+    <tbody>';
+
+    $blog_posts = [
+        ['Blog Post 1', ''],
+        ['Blog Post 2', ''],
+        ['Blog Post 3', ''],
+        ['Blog Post 4', ''],
+        ['Blog Post 5', '']
+    ];
+
+    foreach ($blog_posts as $page) {
+        list($label, $post_id) = $page;
+        // Get the current post ID from the database
+        $current_post_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT rel_wp_post_id_1 FROM $table_name WHERE name = %s",
+            $label
+        ));
+        
+        echo '<tr>
+            <td style="border-right: 2px solid #000000;"><strong>' . esc_html($label) . '</strong></td>
+            <td>
+                <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $label))) . '">
+                    <option value="">select a page</option>
+                    <!-- Populate with WP pages if needed -->
+                </select>
+            </td>
+            <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
+            <td>Use assigned default</td>
+            <td>' . esc_html($current_post_id) . '</td>
+            <td>
+                <button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button>
+            </td>
+        </tr>';
+    }
     echo '</tbody></table>';
 }
 
