@@ -265,6 +265,9 @@ function gurpovich_injector2_page() {
             min-width: 28px;
             max-width: 28px;
             width: 28px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         .gurpo-table .radio-col {
             width: 28px; min-width: 28px; max-width: 28px; text-align: center; padding-left: 2px; padding-right: 2px;
@@ -294,7 +297,7 @@ function gurpovich_injector2_page() {
             justify-content: center;
         }
     </style>';
-    echo '<table class="widefat fixed gurpo-table" style="width:100%; min-width:1100px;">';
+    echo '<table class="widefat fixed gurpo-table" style="width:100%; min-width:1100px; table-layout:fixed;">';
     echo '<thead>
         <tr>
             <th class="vertical-sep" style="background: #f5f5f5;"></th>
@@ -305,7 +308,7 @@ function gurpovich_injector2_page() {
             <th class="vertical-sep" style="width:120px; font-weight:bold;">pageidea</th>
             <th class="radio-col" style="font-weight:bold;"> </th>
             <th style="min-width:200px; font-weight:bold;">select a page</th>
-            <th class="vertical-sep or-col" style="font-weight:bold;">OR</th>
+            <th class="vertical-sep or-col" style="font-weight:bold; width:28px;">OR</th>
             <th class="radio-col" style="font-weight:bold;"> </th>
             <th style="min-width:120px; font-weight:bold;">use assigned default</th>
             <th class="vertical-sep" style="min-width:90px; font-weight:bold;">rel_wp_post_id_1</th>
@@ -359,7 +362,7 @@ function gurpovich_injector2_page() {
                         }
                     echo '</select>
                 </td>
-                <td class="vertical-sep or-col">OR</td>
+                <td class="vertical-sep or-col" style="width:28px;">OR</td>
                 <td class="radio-col">
                     <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="default" style="width: 20px; height: 20px;">
                 </td>
@@ -430,9 +433,18 @@ function gurpovich_injector2_page() {
                 // Handle temprex refresh button
                 if (refreshBtn && select && temprexInput) {
                     refreshBtn.addEventListener("click", function() {
-                        var postId = select.value;
+                        // Determine which radio is selected
+                        var radiosArr = Array.from(radios);
+                        var selectedRadio = radiosArr.find(r => r.checked);
+                        var postId = '';
+                        if (selectedRadio && selectedRadio.value === "custom") {
+                            postId = select.value;
+                        } else if (selectedRadio && selectedRadio.value === "default") {
+                            var relInput = row.querySelector('input[name^="rel_wp_post_id_1_"]');
+                            if (relInput) postId = relInput.value;
+                        }
                         if (!postId) {
-                            alert("Please select a page to scrape.");
+                            alert("Please select or enter a page ID to scrape.");
                             return;
                         }
                         refreshBtn.disabled = true;
