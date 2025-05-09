@@ -368,6 +368,7 @@ function gurpovich_injector2_page() {
             <th class="vertical-sep" style="min-width:120px; font-weight:bold;">temprex_of_shortcodes</th>
             <th style="min-width:120px; font-weight:bold;">zeeprex_submit</th>
             <th style="min-width:220px; font-weight:bold;">prexnar1</th>
+            <th style="min-width:220px; font-weight:bold;">prexnar2</th>
             <th class="button-col" style="font-weight:bold;"></th>
         </tr>
     </thead>
@@ -429,6 +430,7 @@ function gurpovich_injector2_page() {
                 </td>
                 <td><input type="text" name="zeeprex_submit_' . esc_attr($pageidea->id) . '" style="width:100%;" /></td>
                 <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea(get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar1', true)) . '</textarea></td>
+                <td><textarea name="prexnar2_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea(get_post_meta($pageidea->rel_wp_post_id_1, 'gurpo_prexnar2', true)) . '</textarea></td>
                 <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
             </tr>';
         }
@@ -670,6 +672,8 @@ function gurpo_screen3_page() {
     echo '<input type="hidden" name="page" value="gurposcreen3" />';
     // Top HR
     echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
+    // Add instruction section
+    echo '<div style="width:100%;background:#d6ecff;color:#1a2333;font-weight:bold;font-size:1.1em;padding:8px 0 8px 12px;margin-bottom:10px;">Select A Page To Inject Your Zeeprex_Submit Text Into</div>';
     // Select a page row with radio
     echo '<table class="form-table"><tbody>';
     echo '<tr><th><label for="balarfi_page_id">Select a page</label></th><td style="display:flex;align-items:center;">';
@@ -701,13 +705,18 @@ function gurpo_screen3_page() {
     // The three fields
     echo '<table class="form-table"><tbody>';
     echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td>';
-    echo '<input type="text" id="temprex_of_shortcodes" name="temprex_of_shortcodes" value="' . esc_attr($temprex) . '" style="width: 400px;" readonly />';
+    echo '<textarea id="temprex_of_shortcodes" name="temprex_of_shortcodes" style="width: 400px; height: 250px;" readonly>' . esc_textarea($temprex) . '</textarea>';
     echo '</td></tr>';
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
     echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 120px;">' . (isset($prexnar1) ? esc_textarea($prexnar1) : '') . '</textarea>';
     echo '</td></tr>';
     echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
     echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
+    echo '</td></tr>';
+    // Add prexnar2 field
+    $prexnar2 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar2', true) : '';
+    echo '<tr><th><label for="prexnar2">prexnar2</label></th><td>';
+    echo '<input type="text" id="prexnar2" name="prexnar2" value="' . esc_attr($prexnar2) . '" style="width: 400px;" readonly />';
     echo '</td></tr>';
     echo '</tbody></table>';
     // Third HR
