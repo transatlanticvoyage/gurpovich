@@ -708,11 +708,29 @@ function gurpo_screen3_page() {
     echo '<tr><td colspan="2" style="padding-bottom:10px;">';
     echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">scrape temprex fresh</button>';
     echo '</td></tr>';
-    echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td>';
+    echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td colspan="2">';
+    echo '<div style="display:flex;gap:18px;">';
+    // Main temprex box
     echo '<textarea id="temprex_of_shortcodes" name="temprex_of_shortcodes" style="width: 400px; height: 250px;" readonly>' . esc_textarea($temprex) . '</textarea>';
+    // Bracketed version
+    $temprex_lines = preg_split('/\r\n|\r|\n/', $temprex);
+    $temprex_bracketed = '';
+    foreach ($temprex_lines as $line) {
+        $trimmed = trim($line);
+        if ($trimmed !== '') {
+            // Only add brackets if not already present
+            if (preg_match('/^\[.*\]$/', $trimmed)) {
+                $temprex_bracketed .= $trimmed . "\n";
+            } else {
+                $temprex_bracketed .= '[' . $trimmed . "]\n";
+            }
+        }
+    }
+    echo '<textarea id="temprex_of_shortcodes_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex_bracketed)) . '</textarea>';
+    echo '</div>';
     echo '</td></tr>';
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
-    echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 320px;">' . (isset($prexnar1) ? esc_textarea($prexnar1) : '') . '</textarea>';
+    echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 320px;"></textarea>';
     echo '</td></tr>';
     echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
     echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
