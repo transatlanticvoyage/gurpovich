@@ -90,6 +90,10 @@ function gurpovich_injector_menu() {
 
 // Render admin page and handle mapping save + JSON update
 function gurpovich_injector_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<div class="wrap"><h1>Gurpovich Admin Injector</h1><form method="post">';
     wp_nonce_field('gurpovich_injector_action','gurpovich_injector_nonce');
     echo '<p><label for="gurp_post_id">WP Post/Page ID:</label><br><input type="number" name="gurp_post_id" id="gurp_post_id" required style="width:100%;max-width:300px;"></p>';
@@ -172,6 +176,10 @@ function gurpovich_process_elements($elements,$map) {
 
 // Callback for the new admin page
 function gurpovich_injector2_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<h1>Gurpovich Injector - Main Screen 1</h1>';
     
     // Add JavaScript for confirmation
@@ -565,6 +573,10 @@ function gurpovich_injector2_page() {
 
 // Callback functions for the new pages
 function gurpo_screen3_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<div class="wrap">';
     echo '<h1>balarfi</h1>';
     
@@ -614,18 +626,34 @@ function gurpo_screen3_page() {
 }
 
 function gurpo_screen4_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<div class="wrap"><h1>Gurpo Screen 4</h1></div>';
 }
 
 function gurpo_screen5_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<div class="wrap"><h1>Gurpo Screen 5</h1></div>';
 }
 
 function gurpo_screen6_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<div class="wrap"><h1>Gurpo Screen 6</h1></div>';
 }
 
 function gurpo_fillernar1_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     echo '<div class="wrap">';
     echo '<h1>Fillernar - Special Custom Filler Content Update System</h1>';
     echo '<h2>Fillernar 1</h2>';
@@ -697,6 +725,10 @@ function gurpovich_plugin_deactivation() {
 
 // Database table viewer page
 function gurpo_db_viewer_page() {
+    // Suppress all admin notices except our own on this page
+    add_action('admin_print_scripts', function() {
+        echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+    }, 1);
     global $wpdb;
     $table_name = $wpdb->prefix . 'gurpo_pageideas';
     
@@ -892,4 +924,68 @@ add_action('wp_ajax_gurpovich_scrape_temprex', function() {
         wp_send_json_error($result);
     }
 });
+
+/**
+ * Replaces shortcodes in Elementor data with user-provided content from zeeprex_submit and saves the updated data.
+ *
+ * @param int $post_id The ID of the Elementor page to update.
+ * @param string $zeeprex_submit_text The user input containing [shortcode] and content pairs.
+ * @return bool|string True on success, error message on failure.
+ */
+function function_inject_content_replace_shortcodes_1($post_id, $zeeprex_submit_text) {
+    if (empty($post_id) || !get_post($post_id)) {
+        return 'Invalid post ID.';
+    }
+    $elementor_data = get_post_meta($post_id, '_elementor_data', true);
+    if (empty($elementor_data)) {
+        return 'No Elementor data found.';
+    }
+    $elements = is_string($elementor_data) ? json_decode($elementor_data, true) : $elementor_data;
+    if (!is_array($elements)) {
+        return 'Could not decode Elementor data.';
+    }
+    // Parse zeeprex_submit_text into shortcode => content map
+    $lines = preg_split('/\r\n|\r|\n/', $zeeprex_submit_text);
+    $map = array();
+    $current_shortcode = '';
+    foreach ($lines as $line) {
+        if (preg_match('/^\[(g_[a-zA-Z0-9_]+)\]$/', trim($line), $m)) {
+            $current_shortcode = $m[0]; // include brackets
+            $map[$current_shortcode] = '';
+        } elseif ($current_shortcode !== '') {
+            $map[$current_shortcode] .= ($map[$current_shortcode] === '' ? '' : "\n") . $line;
+        }
+    }
+    // Remove shortcodes with empty content
+    foreach ($map as $k => $v) {
+        if (trim($v) === '') {
+            unset($map[$k]);
+        }
+    }
+    if (empty($map)) {
+        return 'No valid shortcode-content pairs found.';
+    }
+    // Recursively replace shortcodes in Elementor data
+    $replace_shortcodes = function($data) use (&$replace_shortcodes, $map) {
+        if (is_array($data)) {
+            foreach ($data as $k => $v) {
+                $data[$k] = $replace_shortcodes($v);
+            }
+            return $data;
+        } elseif (is_string($data)) {
+            foreach ($map as $shortcode => $content) {
+                $data = str_replace($shortcode, $content, $data);
+            }
+            return $data;
+        } else {
+            return $data;
+        }
+    };
+    $updated_elements = $replace_shortcodes($elements);
+    // Save updated data
+    update_post_meta($post_id, '_elementor_data', $updated_elements);
+    // Save the submitted text in prexnar1 for reference
+    update_post_meta($post_id, 'gurpo_prexnar1', $zeeprex_submit_text);
+    return true;
+}
 ?>
