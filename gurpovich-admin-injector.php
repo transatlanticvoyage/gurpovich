@@ -252,15 +252,49 @@ function gurpovich_injector2_page() {
 
     // Pageideas Section
     echo '<h2>Pageideas</h2>';
-    echo '<table class="widefat fixed" style="width:auto; min-width:900px;">';
+    echo '<style>
+        .gurpo-table th, .gurpo-table td {
+            vertical-align: middle !important;
+            padding: 8px 6px;
+        }
+        .gurpo-table th {
+            background: #f5f5f5;
+        }
+        .gurpo-table textarea {
+            min-width: 220px;
+            max-width: 350px;
+            width: 100%;
+        }
+        .gurpo-table select {
+            min-width: 180px;
+            width: 100%;
+        }
+        .gurpo-table .vertical-sep {
+            border-right: 2px solid #000000;
+        }
+        .gurpo-table .or-col {
+            background: #000; color: #fff; font-weight: bold; text-align: center;
+            min-width: 60px;
+        }
+        .gurpo-table .radio-col {
+            width: 40px; text-align: center;
+        }
+        .gurpo-table .button-col {
+            min-width: 170px;
+        }
+    </style>';
+    echo '<table class="widefat fixed gurpo-table" style="width:100%; min-width:1100px;">';
     echo '<thead>
         <tr>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;">pageidea</th>
-            <th colspan="2" style="text-align:center; color: #000000; font-weight: bold; text-transform: lowercase;">select a page</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">use assigned default</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">rel_wp_post_id_1</th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase; border-right: 2px solid #000000;"></th>
-            <th style="color: #000000; font-weight: bold; text-transform: lowercase;">prexnar1</th>
+            <th class="vertical-sep" style="width:120px;">pageidea</th>
+            <th class="radio-col"> </th>
+            <th style="min-width:200px;">select a page</th>
+            <th class="vertical-sep or-col">OR</th>
+            <th class="radio-col"> </th>
+            <th style="min-width:120px;">use assigned default</th>
+            <th class="vertical-sep" style="min-width:90px;">rel_wp_post_id_1</th>
+            <th style="min-width:220px;">prexnar1</th>
+            <th class="button-col"></th>
         </tr>
     </thead>
     <tbody>';
@@ -294,12 +328,12 @@ function gurpovich_injector2_page() {
             }
 
             echo '<tr>
-                <td style="border-right: 2px solid #000000;"><strong>' . esc_html($pageidea->name) . '</strong></td>
-                <td style="width: 50px; text-align: center;">
+                <td class="vertical-sep"><strong>' . esc_html($pageidea->name) . '</strong></td>
+                <td class="radio-col">
                     <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="custom" style="width: 20px; height: 20px;">
                 </td>
                 <td>
-                    <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '" style="width: 100%;">
+                    <select name="select_' . esc_attr(strtolower(str_replace(' ', '_', $pageidea->name))) . '">
                         <option value="">select a page</option>';
                         foreach ($pages as $page) {
                             $selected = ($page->ID == $pageidea->rel_wp_post_id_1) ? 'selected' : '';
@@ -307,15 +341,14 @@ function gurpovich_injector2_page() {
                         }
                     echo '</select>
                 </td>
-                <td style="text-align:center; background-color: #000000; color: #ffffff; font-weight:bold;">OR</td>
-                <td style="width: 50px; text-align: center;">
+                <td class="vertical-sep or-col">OR</td>
+                <td class="radio-col">
                     <input type="radio" name="selection_type_' . esc_attr($pageidea->id) . '" value="default" style="width: 20px; height: 20px;">
                 </td>
                 <td>Use assigned default</td>
-                <td style="border-right: 2px solid #000000;">' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
-                <td>
-                    <textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4" style="width: 100%;">' . esc_textarea($prexnar1_content) . '</textarea>
-                </td>
+                <td class="vertical-sep">' . esc_html($pageidea->rel_wp_post_id_1) . '</td>
+                <td><textarea name="prexnar1_' . esc_attr($pageidea->id) . '" rows="4">' . esc_textarea($prexnar1_content) . '</textarea></td>
+                <td class="button-col"><button class="button button-primary" style="background:#21759b; border-color:#21759b;">Save & Update Elementor</button></td>
             </tr>';
         }
     } else {
