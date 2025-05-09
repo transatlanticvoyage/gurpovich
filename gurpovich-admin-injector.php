@@ -704,11 +704,15 @@ function gurpo_screen3_page() {
     echo '<hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;">';
     // The three fields
     echo '<table class="form-table"><tbody>';
+    // Scrape temprex fresh button
+    echo '<tr><td colspan="2" style="padding-bottom:10px;">';
+    echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">scrape temprex fresh</button>';
+    echo '</td></tr>';
     echo '<tr><th><label for="temprex_of_shortcodes">temprex_of_shortcodes</label></th><td>';
     echo '<textarea id="temprex_of_shortcodes" name="temprex_of_shortcodes" style="width: 400px; height: 250px;" readonly>' . esc_textarea($temprex) . '</textarea>';
     echo '</td></tr>';
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
-    echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 120px;">' . (isset($prexnar1) ? esc_textarea($prexnar1) : '') . '</textarea>';
+    echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 320px;">' . (isset($prexnar1) ? esc_textarea($prexnar1) : '') . '</textarea>';
     echo '</td></tr>';
     echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
     echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
