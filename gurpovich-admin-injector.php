@@ -288,7 +288,8 @@ function gurpovich_injector2_page() {
     echo '<table class="widefat fixed gurpo-table" style="width:100%; min-width:1100px;">';
     echo '<thead>
         <tr>
-            <th class="vertical-sep" style="background: #b6f5b6; color: #222; font-weight: bold; text-transform: lowercase; text-align: center; font-size: 1.1em;" colspan="8">choose a target page for injection</th>
+            <th class="vertical-sep" style="background: #f5f5f5;"></th>
+            <th colspan="7" style="background: #b6f5b6; color: #222; font-weight: bold; text-transform: lowercase; text-align: center; font-size: 1.1em;">choose a target page for injection</th>
             <th style="background: #f5f5f5;"></th>
         </tr>
         <tr>
