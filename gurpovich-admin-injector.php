@@ -699,12 +699,42 @@ function gurpo_screen4_page() {
             $feedback = '<div style="background:#b72e2e;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Error: driggs_domain is required.</div>';
         }
     }
+    echo '<div style="display: flex; flex-direction: row; align-items: flex-start;">';
+    // Left: Form
+    echo '<div style="flex: 0 0 auto;">';
     echo $feedback;
     echo '<form method="post">';
     echo '<label for="driggs_wafer" style="font-weight:bold;">submit_driggs_fields_as_wafer</label><br />';
-    echo '<textarea id="driggs_wafer" name="driggs_wafer" style="width:250px;height:400px;"></textarea><br />';
+    echo '<textarea id="driggs_wafer" name="driggs_wafer" style="width:350px;height:550px;"></textarea><br />';
     echo '<button type="submit" name="submit_driggs_fields_as_wafer" style="background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:10px 30px;border:none;border-radius:4px;cursor:pointer;margin-top:20px;display:block;">submit_driggs_fields_as_wafer</button>';
     echo '</form>';
+    echo '</div>';
+    // Right: Current Driggs Wafer
+    echo '<div style="flex: 0 0 auto; margin-left: 40px;">';
+    echo '<div style="font-weight:bold; margin-bottom:10px;">current driggs wafer saved in db</div>';
+    // Fetch the most recent entry
+    $table = $wpdb->prefix . 'gurpo_driggs';
+    $row = $wpdb->get_row("SELECT * FROM $table ORDER BY id DESC LIMIT 1", ARRAY_A);
+    $fields = [
+        'driggs_domain',
+        'driggs_industry',
+        'driggs_city',
+        'driggs_brand_name_1',
+        'driggs_site_type_or_purpose',
+        'driggs_email_1',
+        'driggs_address_1',
+        'driggs_phone1'
+    ];
+    $wafer = '';
+    if ($row) {
+        foreach ($fields as $f) {
+            $wafer .= $f . "\n" . (isset($row[$f]) ? $row[$f] : '') . "\n";
+        }
+    }
+    echo '<textarea id="driggs_wafer_db" style="width:350px;height:550px;">' . esc_textarea(trim($wafer)) . '</textarea><br />';
+    echo '<button type="button" onclick="navigator.clipboard.writeText(document.getElementById(\'driggs_wafer_db\').value);" style="background:#21759b;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-top:10px;">copy</button>';
+    echo '</div>';
+    echo '</div>';
     echo '</div>';
 }
 
