@@ -18,6 +18,68 @@ error_log('Gurpovich plugin initializing');
 error_log('Plugin directory: ' . GURPOVICH_PLUGIN_DIR);
 error_log('Plugin URL: ' . GURPOVICH_PLUGIN_URL);
 
+// Direct admin menu registration
+function gurpovich_add_admin_menu() {
+    error_log('Adding admin menu directly');
+    
+    // Main menu item
+    add_menu_page(
+        'Screen 1',
+        'Screen 1',
+        'administrator',
+        'gurposcreen1',
+        'gurpovich_display_screen1',
+        'dashicons-admin-generic',
+        2
+    );
+
+    // Submenu items
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 2',
+        'Screen 2',
+        'administrator',
+        'gurposcreen2',
+        'gurpovich_display_screen2'
+    );
+
+    add_submenu_page(
+        'gurposcreen1',
+        'Screen 3 - Inject 1 -Homepage',
+        'Screen 3 - Inject 1 -Homepage',
+        'administrator',
+        'gurposcreen3',
+        'gurpovich_display_screen3'
+    );
+
+    // Add other submenu items as needed
+}
+add_action('admin_menu', 'gurpovich_add_admin_menu');
+
+// Screen display functions
+function gurpovich_display_screen1() {
+    if (!current_user_can('administrator')) {
+        wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
+    }
+    require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen1-injector.php';
+}
+
+function gurpovich_display_screen2() {
+    if (!current_user_can('administrator')) {
+        wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
+    }
+    require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen2-main.php';
+}
+
+function gurpovich_display_screen3() {
+    if (!current_user_can('administrator')) {
+        wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
+    }
+    require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen3-homepage.php';
+    $screen = new \Gurpovich\Admin\Screens\Screen3_Homepage();
+    $screen->render();
+}
+
 // Autoloader for plugin classes
 spl_autoload_register(function ($class) {
     // Project-specific namespace prefix
@@ -62,25 +124,6 @@ function gurpovich_init() {
     // Initialize main plugin class
     $plugin = new Gurpovich\Gurpovich();
     $plugin->run();
-    
-    // Directly register admin menu as a fallback
-    if (is_admin()) {
-        error_log('In admin context, registering admin hooks');
-        $admin = new Gurpovich\Admin\Gurpovich_Admin('gurpovich', GURPOVICH_VERSION);
-        
-        // Debug user capabilities
-        $user = wp_get_current_user();
-        error_log('Current user ID: ' . $user->ID);
-        error_log('User roles: ' . implode(', ', $user->roles));
-        error_log('Is admin: ' . (current_user_can('administrator') ? 'yes' : 'no'));
-        
-        // Only register admin menu if user is an administrator
-        if (current_user_can('administrator')) {
-            add_action('admin_menu', array($admin, 'add_plugin_admin_menu'));
-            add_action('admin_enqueue_scripts', array($admin, 'enqueue_styles'));
-            add_action('admin_enqueue_scripts', array($admin, 'enqueue_scripts'));
-        }
-    }
 }
 add_action('plugins_loaded', 'gurpovich_init');
 
