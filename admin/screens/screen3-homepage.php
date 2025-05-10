@@ -113,21 +113,48 @@ class Screen3_Homepage {
             return;
         }
 
-        // Get the page content
-        $content = $page->post_content;
+        // Get the Elementor data
+        $elementor_data = get_post_meta($page_id, '_elementor_data', true);
+        
+        if (empty($elementor_data)) {
+            return;
+        }
 
-        // Extract content between [temprex] tags
-        preg_match_all('/\[temprex\](.*?)\[\/temprex\]/s', $content, $matches);
+        // Decode the JSON data
+        $elementor_content = json_decode($elementor_data, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return;
+        }
 
-        if (!empty($matches[1])) {
-            $scraped_content = implode("\n\n", $matches[1]);
-            $scraped_content_bracketed = implode("\n\n", array_map(function($content) {
-                return "[temprex]" . trim($content) . "[/temprex]";
-            }, $matches[1]));
+        // Function to recursively search for g_ words in Elementor data
+        $g_words = array();
+        $this->extract_g_words($elementor_content, $g_words);
+
+        if (!empty($g_words)) {
+            $scraped_content = implode("\n", array_unique($g_words));
+            $scraped_content_bracketed = implode("\n", array_map(function($word) {
+                return "[temprex]" . $word . "[/temprex]";
+            }, array_unique($g_words)));
 
             // Save the scraped content
             update_option('gurpovich_temprex_scraped_' . $page_id, $scraped_content);
             update_option('gurpovich_temprex_scraped_bracketed_' . $page_id, $scraped_content_bracketed);
+        }
+    }
+
+    private function extract_g_words($data, &$g_words) {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (is_string($value)) {
+                    // Look for words starting with g_
+                    preg_match_all('/\bg_[a-zA-Z0-9_]+\b/', $value, $matches);
+                    if (!empty($matches[0])) {
+                        $g_words = array_merge($g_words, $matches[0]);
+                    }
+                }
+                $this->extract_g_words($value, $g_words);
+            }
         }
     }
 } 
