@@ -1,63 +1,44 @@
 <?php
 /**
- * Plugin Name: Gurpovich Admin Injector
- * Description: Injects user-defined content into Elementor data JSON directly upon mapping save.
- * Version: 5.8
- * Author: Sake Nova
+ * The plugin bootstrap file
+ *
+ * @link              https://gurpovich.com
+ * @since             1.0.0
+ * @package           Gurpovich
+ *
+ * @wordpress-plugin
+ * Plugin Name:       Gurpovich
+ * Plugin URI:        https://gurpovich.com
+ * Description:       Gurpovich plugin for WordPress
+ * Version:           1.0.0
+ * Author:            Gurpovich
+ * Author URI:        https://gurpovich.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       gurpovich
+ * Domain Path:       /languages
  */
 
-if (!defined('ABSPATH')) exit;
+// If this file is called directly, abort.
+if (!defined('WPINC')) {
+    die;
+}
 
 // Define plugin constants
-define('GURPOVICH_VERSION', '5.8');
+define('GURPOVICH_VERSION', '1.0.0');
 define('GURPOVICH_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GURPOVICH_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-// Debug plugin initialization
-error_log('Gurpovich plugin initializing');
-error_log('Plugin directory: ' . GURPOVICH_PLUGIN_DIR);
-error_log('Plugin URL: ' . GURPOVICH_PLUGIN_URL);
+// First, require the main class file directly
+require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich.php';
 
-// Basic test function
-function gurpovich_test_page() {
-    echo '<div class="wrap">';
-    echo '<h1>Test Page</h1>';
-    echo '<p>If you can see this, the plugin is working.</p>';
-    echo '</div>';
-}
-
-// Simple menu registration
-function gurpovich_add_menu() {
-    add_menu_page(
-        'Test Page',
-        'Test Page',
-        'read',
-        'gurpovich-test',
-        'gurpovich_test_page',
-        'dashicons-admin-generic',
-        1
-    );
-}
-add_action('admin_menu', 'gurpovich_add_menu');
-
-// Debug output
-function gurpovich_debug_output() {
-    if (is_admin()) {
-        $user = wp_get_current_user();
-        echo '<!-- Debug Info:';
-        echo 'User ID: ' . $user->ID;
-        echo 'User Roles: ' . implode(', ', $user->roles);
-        echo 'Is Admin: ' . (current_user_can('administrator') ? 'yes' : 'no');
-        echo 'Can Read: ' . (current_user_can('read') ? 'yes' : 'no');
-        echo '-->';
-    }
-}
-add_action('admin_footer', 'gurpovich_debug_output');
-
-// Autoloader for plugin classes
+// Then set up the autoloader
 spl_autoload_register(function ($class) {
     // Project-specific namespace prefix
     $prefix = 'Gurpovich\\';
+    
+    // Base directory for the namespace prefix
+    $base_dir = GURPOVICH_PLUGIN_DIR;
     
     // Check if the class uses the namespace prefix
     $len = strlen($prefix);
@@ -68,49 +49,45 @@ spl_autoload_register(function ($class) {
     // Get the relative class name
     $relative_class = substr($class, $len);
     
-    // Define the base directories to search
-    $base_dirs = array(
-        GURPOVICH_PLUGIN_DIR . 'includes/',
-        GURPOVICH_PLUGIN_DIR . 'admin/'
-    );
+    // Replace namespace separators with directory separators
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
     
-    // Try to find the file in each base directory
-    foreach ($base_dirs as $base_dir) {
-        $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-        error_log('Trying to load class file: ' . $file);
-        if (file_exists($file)) {
-            error_log('Found class file: ' . $file);
-            require $file;
-            return;
-        }
+    // If the file exists, require it
+    if (file_exists($file)) {
+        require $file;
     }
-    error_log('Could not find class file for: ' . $class);
 });
 
 // Initialize the plugin
 function gurpovich_init() {
-    error_log('Gurpovich plugin init function called');
+    // Log initialization attempt
+    error_log('Gurpovich: Attempting to initialize plugin');
     
-    // Load required files
-    require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-loader.php';
-    require_once GURPOVICH_PLUGIN_DIR . 'admin/class-gurpovich-admin.php';
-    
-    // Initialize main plugin class
-    $plugin = new Gurpovich\Gurpovich();
-    $plugin->run();
+    try {
+        // Create new instance of main plugin class
+        $plugin = new \Gurpovich\Gurpovich();
+        
+        // Run the plugin
+        $plugin->run();
+        
+        error_log('Gurpovich: Plugin initialized successfully');
+    } catch (\Exception $e) {
+        error_log('Gurpovich Error: ' . $e->getMessage());
+        error_log('Gurpovich Error Trace: ' . $e->getTraceAsString());
+    }
 }
+
+// Hook into WordPress
 add_action('plugins_loaded', 'gurpovich_init');
 
 // Activation hook
 register_activation_hook(__FILE__, function() {
-    error_log('Gurpovich plugin activating');
     require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-activator.php';
-    Gurpovich\Gurpovich_Activator::activate();
+    \Gurpovich\Gurpovich_Activator::activate();
 });
 
 // Deactivation hook
 register_deactivation_hook(__FILE__, function() {
-    error_log('Gurpovich plugin deactivating');
-    require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-activator.php';
-    Gurpovich\Gurpovich_Activator::deactivate();
+    require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-deactivator.php';
+    \Gurpovich\Gurpovich_Deactivator::deactivate();
 }); 
