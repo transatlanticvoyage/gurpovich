@@ -18,9 +18,6 @@ spl_autoload_register(function ($class) {
     // Project-specific namespace prefix
     $prefix = 'Gurpovich\\';
     
-    // Base directory for the namespace prefix
-    $base_dir = GURPOVICH_PLUGIN_DIR . 'includes/';
-    
     // Check if the class uses the namespace prefix
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
@@ -30,12 +27,19 @@ spl_autoload_register(function ($class) {
     // Get the relative class name
     $relative_class = substr($class, $len);
     
-    // Replace namespace separators with directory separators
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+    // Define the base directories to search
+    $base_dirs = array(
+        GURPOVICH_PLUGIN_DIR . 'includes/',
+        GURPOVICH_PLUGIN_DIR . 'admin/'
+    );
     
-    // If the file exists, require it
-    if (file_exists($file)) {
-        require $file;
+    // Try to find the file in each base directory
+    foreach ($base_dirs as $base_dir) {
+        $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+        if (file_exists($file)) {
+            require $file;
+            return;
+        }
     }
 });
 

@@ -159,6 +159,7 @@ class Gurpovich_Admin {
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
         }
+        require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen3-homepage.php';
         $screen = new \Gurpovich\Admin\Screens\Screen3_Homepage();
         $screen->render();
     }
