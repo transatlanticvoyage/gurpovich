@@ -13,6 +13,12 @@ class Screen3_Homepage {
             </style>';
         }, 1);
 
+        // Get all published pages
+        $pages = get_pages(array(
+            'sort_column' => 'post_title',
+            'sort_order' => 'ASC'
+        ));
+
         echo '<div class="wrap">';
         echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 3 - Inject 1 -Homepage</div>';
         echo '<h1>balarfi</h1>';
@@ -26,8 +32,12 @@ class Screen3_Homepage {
         echo '<table class="form-table"><tbody>';
         echo '<tr><th><label for="balarfi_page_id">Select a page</label></th>';
         echo '<td style="display:flex;align-items:center;">';
-        echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();" style="margin-right:12px;">';
-        // Add your page options here
+        echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();" style="margin-right:12px; min-width: 200px;">';
+        echo '<option value="">Select a page...</option>';
+        foreach ($pages as $page) {
+            $selected = isset($_POST['balarfi_page_id']) && $_POST['balarfi_page_id'] == $page->ID ? 'selected' : '';
+            echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>' . esc_html($page->post_title) . '</option>';
+        }
         echo '</select>';
         echo '<input type="radio" name="kardwaj_radio" value="select" style="margin-left:8px;" checked onclick="this.form.submit();">';
         echo '</td></tr>';
