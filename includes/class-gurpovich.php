@@ -19,6 +19,9 @@ class Gurpovich {
         require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-loader.php';
         require_once GURPOVICH_PLUGIN_DIR . 'admin/class-gurpovich-admin.php';
         
+        // Initialize the loader
+        $this->loader = new \Gurpovich\Gurpovich_Loader();
+        
         // Load screen files
         $screen_files = glob(GURPOVICH_PLUGIN_DIR . 'admin/screens/*.php');
         foreach ($screen_files as $file) {
