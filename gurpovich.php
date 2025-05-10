@@ -18,67 +18,41 @@ error_log('Gurpovich plugin initializing');
 error_log('Plugin directory: ' . GURPOVICH_PLUGIN_DIR);
 error_log('Plugin URL: ' . GURPOVICH_PLUGIN_URL);
 
-// Direct admin menu registration
-function gurpovich_add_admin_menu() {
-    error_log('Adding admin menu directly');
-    
-    // Main menu item
+// Basic test function
+function gurpovich_test_page() {
+    echo '<div class="wrap">';
+    echo '<h1>Test Page</h1>';
+    echo '<p>If you can see this, the plugin is working.</p>';
+    echo '</div>';
+}
+
+// Simple menu registration
+function gurpovich_add_menu() {
     add_menu_page(
-        'Screen 1',
-        'Screen 1',
-        'administrator',
-        'gurposcreen1',
-        'gurpovich_display_screen1',
+        'Test Page',
+        'Test Page',
+        'read',
+        'gurpovich-test',
+        'gurpovich_test_page',
         'dashicons-admin-generic',
-        2
+        1
     );
-
-    // Submenu items
-    add_submenu_page(
-        'gurposcreen1',
-        'Screen 2',
-        'Screen 2',
-        'administrator',
-        'gurposcreen2',
-        'gurpovich_display_screen2'
-    );
-
-    add_submenu_page(
-        'gurposcreen1',
-        'Screen 3 - Inject 1 -Homepage',
-        'Screen 3 - Inject 1 -Homepage',
-        'administrator',
-        'gurposcreen3',
-        'gurpovich_display_screen3'
-    );
-
-    // Add other submenu items as needed
 }
-add_action('admin_menu', 'gurpovich_add_admin_menu');
+add_action('admin_menu', 'gurpovich_add_menu');
 
-// Screen display functions
-function gurpovich_display_screen1() {
-    if (!current_user_can('administrator')) {
-        wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
+// Debug output
+function gurpovich_debug_output() {
+    if (is_admin()) {
+        $user = wp_get_current_user();
+        echo '<!-- Debug Info:';
+        echo 'User ID: ' . $user->ID;
+        echo 'User Roles: ' . implode(', ', $user->roles);
+        echo 'Is Admin: ' . (current_user_can('administrator') ? 'yes' : 'no');
+        echo 'Can Read: ' . (current_user_can('read') ? 'yes' : 'no');
+        echo '-->';
     }
-    require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen1-injector.php';
 }
-
-function gurpovich_display_screen2() {
-    if (!current_user_can('administrator')) {
-        wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
-    }
-    require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen2-main.php';
-}
-
-function gurpovich_display_screen3() {
-    if (!current_user_can('administrator')) {
-        wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
-    }
-    require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen3-homepage.php';
-    $screen = new \Gurpovich\Admin\Screens\Screen3_Homepage();
-    $screen->render();
-}
+add_action('admin_footer', 'gurpovich_debug_output');
 
 // Autoloader for plugin classes
 spl_autoload_register(function ($class) {
