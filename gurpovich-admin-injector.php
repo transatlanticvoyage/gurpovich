@@ -651,6 +651,8 @@ function gurpo_screen3_page() {
     
     // Handle form submission for shortcode injection
     $feedback = '';
+    $temprex = '';
+    $prexnar1 = '';
     if (isset($_POST['function_inject_content_replace_shortcodes_1_submit'])) {
         $zeeprex_submit = isset($_POST['zeeprex_submit']) ? $_POST['zeeprex_submit'] : '';
         $result = function_inject_content_replace_shortcodes_1($selected_page_id, $zeeprex_submit);
@@ -667,6 +669,8 @@ function gurpo_screen3_page() {
         $temprex2_content = isset($_POST['temprex_2_cached_by_hand']) ? $_POST['temprex_2_cached_by_hand'] : '';
         update_post_meta($selected_page_id, 'gurpo_temprex_2_cached_by_hand', $temprex2_content);
         $feedback = '<div style="background:#4a2c2a;color:#fff;padding:10px;margin:10px 0;font-weight:bold;">Temprex 2 cached successfully.</div>';
+        $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true);
+        $prexnar1 = get_post_meta($selected_page_id, 'gurpo_prexnar1', true);
     } elseif (isset($_POST['scrape_temprex_fresh'])) {
         // Handle scrape temprex fresh
         $result = scrape_temprex_from_existing_page($selected_page_id);
@@ -679,6 +683,7 @@ function gurpo_screen3_page() {
         $temprex = get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true);
         $prexnar1 = get_post_meta($selected_page_id, 'gurpo_prexnar1', true);
     } else {
+        // Always fetch the current value for the selected page
         $temprex = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_temprex_1_scraped', true) : '';
         $prexnar1 = $selected_page_id ? get_post_meta($selected_page_id, 'gurpo_prexnar1', true) : '';
     }
