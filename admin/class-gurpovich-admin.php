@@ -91,6 +91,9 @@ class Gurpovich_Admin {
     }
 
     public function add_plugin_admin_menu() {
+        // Debug menu registration
+        error_log('Registering admin menu');
+        
         // Main menu item
         add_menu_page(
             __('Screen 1', 'gurpovich'),
@@ -119,6 +122,7 @@ class Gurpovich_Admin {
         );
 
         foreach ($screens as $screen) {
+            error_log('Adding submenu: ' . $screen[2]);
             add_submenu_page(
                 'gurposcreen1',
                 __($screen[0], 'gurpovich'),
@@ -156,10 +160,22 @@ class Gurpovich_Admin {
     }
 
     public function display_screen3_page() {
+        // Debug user capabilities
+        $user = wp_get_current_user();
+        error_log('Current user ID: ' . $user->ID);
+        error_log('User roles: ' . implode(', ', $user->roles));
+        error_log('Can manage options: ' . (current_user_can('manage_options') ? 'yes' : 'no'));
+        
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
         }
-        require_once GURPOVICH_PLUGIN_DIR . 'admin/screens/screen3-homepage.php';
+        
+        // Debug file existence
+        $screen_file = GURPOVICH_PLUGIN_DIR . 'admin/screens/screen3-homepage.php';
+        error_log('Screen file exists: ' . (file_exists($screen_file) ? 'yes' : 'no'));
+        error_log('Screen file path: ' . $screen_file);
+        
+        require_once $screen_file;
         $screen = new \Gurpovich\Admin\Screens\Screen3_Homepage();
         $screen->render();
     }

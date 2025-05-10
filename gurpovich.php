@@ -13,6 +13,11 @@ define('GURPOVICH_VERSION', '5.8');
 define('GURPOVICH_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GURPOVICH_PLUGIN_URL', plugin_dir_url(__FILE__));
 
+// Debug plugin initialization
+error_log('Gurpovich plugin initializing');
+error_log('Plugin directory: ' . GURPOVICH_PLUGIN_DIR);
+error_log('Plugin URL: ' . GURPOVICH_PLUGIN_URL);
+
 // Autoloader for plugin classes
 spl_autoload_register(function ($class) {
     // Project-specific namespace prefix
@@ -36,15 +41,19 @@ spl_autoload_register(function ($class) {
     // Try to find the file in each base directory
     foreach ($base_dirs as $base_dir) {
         $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+        error_log('Trying to load class file: ' . $file);
         if (file_exists($file)) {
+            error_log('Found class file: ' . $file);
             require $file;
             return;
         }
     }
+    error_log('Could not find class file for: ' . $class);
 });
 
 // Initialize the plugin
 function gurpovich_init() {
+    error_log('Gurpovich plugin init function called');
     // Initialize main plugin class
     $plugin = new Gurpovich\Gurpovich();
     $plugin->run();
@@ -53,12 +62,14 @@ add_action('plugins_loaded', 'gurpovich_init');
 
 // Activation hook
 register_activation_hook(__FILE__, function() {
+    error_log('Gurpovich plugin activating');
     require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-activator.php';
     Gurpovich\Gurpovich_Activator::activate();
 });
 
 // Deactivation hook
 register_deactivation_hook(__FILE__, function() {
+    error_log('Gurpovich plugin deactivating');
     require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-activator.php';
     Gurpovich\Gurpovich_Activator::deactivate();
 }); 
