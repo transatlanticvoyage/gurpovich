@@ -753,8 +753,13 @@ function gurpo_screen3_page() {
     echo '<textarea id="temprex_1_scraped_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex_bracketed)) . '</textarea>';
     echo '</div>';
     echo '</td></tr>';
-    // Add new temprex_2_cached_by_hand section
-    echo '<tr><th><label for="temprex_2_cached_by_hand">temprex_2_cached_by_hand</label></th><td colspan="2">';
+    // Add <hr> before temprex_2_cached_by_hand section
+    echo '<tr><td colspan="3"><hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;"></td></tr>';
+    // temprex_2_cached_by_hand section
+    echo '<tr><th><label for="temprex_2_cached_by_hand">temprex_2_cached_by_hand</label><br />';
+    // Move cache now button directly below the label
+    echo '<button type="submit" name="cache_temprex_2" style="background:#4a2c2a;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">cache now</button>';
+    echo '</th><td colspan="2">';
     echo '<div style="display:flex;gap:18px;">';
     // Main temprex box
     echo '<textarea id="temprex_2_cached_by_hand" name="temprex_2_cached_by_hand" style="width: 400px; height: 250px;">' . esc_textarea(get_post_meta($selected_page_id, 'gurpo_temprex_2_cached_by_hand', true)) . '</textarea>';
@@ -774,13 +779,15 @@ function gurpo_screen3_page() {
     }
     echo '<textarea id="temprex_2_cached_by_hand_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea(trim($temprex2_bracketed)) . '</textarea>';
     echo '</div>';
-    // Add cache now button
-    echo '<tr><td colspan="2" style="padding-bottom:10px;">';
-    echo '<button type="submit" name="cache_temprex_2" style="background:#4a2c2a;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">cache now</button>';
     echo '</td></tr>';
+    // Add <hr> after temprex_2_cached_by_hand section
+    echo '<tr><td colspan="3"><hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;"></td></tr>';
+    // zeeprex_submit section
     echo '<tr><th><label for="zeeprex_submit">zeeprex_submit</label></th><td>';
     echo '<textarea id="zeeprex_submit" name="zeeprex_submit" style="width: 400px; height: 320px;"></textarea>';
     echo '</td></tr>';
+    // Add <hr> after zeeprex_submit section (before prexnar1)
+    echo '<tr><td colspan="3"><hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;"></td></tr>';
     echo '<tr><th><label for="prexnar1">prexnar1</label></th><td>';
     echo '<input type="text" id="prexnar1" name="prexnar1" value="' . esc_attr($prexnar1) . '" style="width: 400px;" readonly />';
     echo '</td></tr>';
