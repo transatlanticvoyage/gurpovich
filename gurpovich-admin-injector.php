@@ -729,11 +729,10 @@ function gurpo_screen3_page() {
     echo '<tr><td colspan="2" style="padding-bottom:10px;">';
     echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">scrape temprex fresh</button>';
     echo '</td></tr>';
-    echo '<tr><th><label for="temprex_1_scraped">temprex_1_scraped</label></th><td colspan="2">';
-    // Move scrape button here, below the label, above the textareas
-    echo '<div style="margin: 8px 0 12px 0;">';
-    echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;">scrape temprex fresh</button>';
-    echo '</div>';
+    echo '<tr><th><label for="temprex_1_scraped">temprex_1_scraped</label><br />';
+    // Place scrape button directly below the label, above the flex row
+    echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">scrape temprex fresh</button>';
+    echo '</th><td colspan="2">';
     echo '<div style="display:flex;gap:18px;">';
     // Main temprex box
     echo '<textarea id="temprex_1_scraped" name="temprex_1_scraped" style="width: 400px; height: 250px;" readonly>' . esc_textarea($temprex) . '</textarea>';
