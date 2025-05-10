@@ -5,6 +5,13 @@ if (!defined('ABSPATH')) exit;
 
 class Screen3_Homepage {
     public function render() {
+        // Handle form submissions
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['scrape_temprex_fresh'])) {
+                $this->handle_temprex_scrape();
+            }
+        }
+
         // Suppress all admin notices except our own on this page
         add_action('admin_print_scripts', function() {
             echo '<style>
@@ -18,6 +25,13 @@ class Screen3_Homepage {
             'sort_column' => 'post_title',
             'sort_order' => 'ASC'
         ));
+
+        // Get the selected page ID
+        $selected_page_id = isset($_POST['balarfi_page_id']) ? intval($_POST['balarfi_page_id']) : 0;
+        
+        // Get the scraped content if it exists
+        $scraped_content = get_option('gurpovich_temprex_scraped_' . $selected_page_id, '');
+        $scraped_content_bracketed = get_option('gurpovich_temprex_scraped_bracketed_' . $selected_page_id, '');
 
         echo '<div class="wrap">';
         echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 3 - Inject 1 -Homepage</div>';
@@ -35,7 +49,7 @@ class Screen3_Homepage {
         echo '<select name="balarfi_page_id" id="balarfi_page_id" onchange="this.form.submit();" style="margin-right:12px; min-width: 200px;">';
         echo '<option value="">Select a page...</option>';
         foreach ($pages as $page) {
-            $selected = isset($_POST['balarfi_page_id']) && $_POST['balarfi_page_id'] == $page->ID ? 'selected' : '';
+            $selected = $selected_page_id == $page->ID ? 'selected' : '';
             echo '<option value="' . esc_attr($page->ID) . '" ' . $selected . '>' . esc_html($page->post_title) . '</option>';
         }
         echo '</select>';
@@ -61,8 +75,8 @@ class Screen3_Homepage {
         echo '<tr><th><label for="temprex_1_scraped">temprex_1_scraped</label><br />';
         echo '<button type="submit" name="scrape_temprex_fresh" style="background:#111;color:#fff;font-weight:bold;text-transform:lowercase;padding:8px 18px;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">scrape temprex fresh</button></th>';
         echo '<td colspan="2"><div style="display:flex;gap:18px;">';
-        echo '<textarea id="temprex_1_scraped" name="temprex_1_scraped" style="width: 400px; height: 250px;" readonly></textarea>';
-        echo '<textarea id="temprex_1_scraped_bracketed" style="width: 400px; height: 250px;" readonly></textarea>';
+        echo '<textarea id="temprex_1_scraped" name="temprex_1_scraped" style="width: 400px; height: 250px;" readonly>' . esc_textarea($scraped_content) . '</textarea>';
+        echo '<textarea id="temprex_1_scraped_bracketed" style="width: 400px; height: 250px;" readonly>' . esc_textarea($scraped_content_bracketed) . '</textarea>';
         echo '</div></td></tr>';
         
         echo '<tr><td colspan="3"><hr style="border:0; border-top:2px solid #333; margin:18px 0 18px 0;"></td></tr>';
@@ -85,5 +99,35 @@ class Screen3_Homepage {
         echo '</form>';
         
         echo '</div>'; // End wrap
+    }
+
+    private function handle_temprex_scrape() {
+        if (!isset($_POST['balarfi_page_id']) || empty($_POST['balarfi_page_id'])) {
+            return;
+        }
+
+        $page_id = intval($_POST['balarfi_page_id']);
+        $page = get_post($page_id);
+
+        if (!$page) {
+            return;
+        }
+
+        // Get the page content
+        $content = $page->post_content;
+
+        // Extract content between [temprex] tags
+        preg_match_all('/\[temprex\](.*?)\[\/temprex\]/s', $content, $matches);
+
+        if (!empty($matches[1])) {
+            $scraped_content = implode("\n\n", $matches[1]);
+            $scraped_content_bracketed = implode("\n\n", array_map(function($content) {
+                return "[temprex]" . trim($content) . "[/temprex]";
+            }, $matches[1]));
+
+            // Save the scraped content
+            update_option('gurpovich_temprex_scraped_' . $page_id, $scraped_content);
+            update_option('gurpovich_temprex_scraped_bracketed_' . $page_id, $scraped_content_bracketed);
+        }
     }
 } 
