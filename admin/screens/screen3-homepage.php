@@ -76,8 +76,4 @@ class Screen3_Homepage {
         
         echo '</div>'; // End wrap
     }
-}
-
-// Initialize and render the screen
-$screen = new Screen3_Homepage();
-$screen->render(); 
+} 
