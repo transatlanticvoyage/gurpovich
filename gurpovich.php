@@ -54,9 +54,22 @@ spl_autoload_register(function ($class) {
 // Initialize the plugin
 function gurpovich_init() {
     error_log('Gurpovich plugin init function called');
+    
+    // Load required files
+    require_once GURPOVICH_PLUGIN_DIR . 'includes/class-gurpovich-loader.php';
+    require_once GURPOVICH_PLUGIN_DIR . 'admin/class-gurpovich-admin.php';
+    
     // Initialize main plugin class
     $plugin = new Gurpovich\Gurpovich();
     $plugin->run();
+    
+    // Directly register admin menu as a fallback
+    if (is_admin()) {
+        $admin = new Gurpovich\Admin\Gurpovich_Admin('gurpovich', GURPOVICH_VERSION);
+        add_action('admin_menu', array($admin, 'add_plugin_admin_menu'));
+        add_action('admin_enqueue_scripts', array($admin, 'enqueue_styles'));
+        add_action('admin_enqueue_scripts', array($admin, 'enqueue_scripts'));
+    }
 }
 add_action('plugins_loaded', 'gurpovich_init');
 
