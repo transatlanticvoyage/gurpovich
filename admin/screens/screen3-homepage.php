@@ -5,14 +5,34 @@ if (!defined('ABSPATH')) exit;
 
 class Screen3_Homepage {
     public function render() {
-        echo '<div class="wrap">';
-        echo '<div style="font-weight:bold; font-size:1.2em; margin-bottom:10px;">Screen 3 - Inject 1 -Homepage</div>';
-        echo '<h1>Homepage Content Injector</h1><form method="post">';
+        // Suppress all admin notices except our own on this page
+        add_action('admin_print_scripts', function() {
+            echo '<style>.notice, .update-nag, .updated, .error, .is-dismissible, .notice-success, .notice-warning, .notice-error, .notice-info, .notice-alt, .notice-large, .notice-inline, .notice-dismiss, .aios-notice, .aioseo-notice, .rank-math-notice, .yoast-notice, .elementor-message, .elementor-notice, .elementor-admin-message, .elementor-admin-notice, .elementor-message-success, .elementor-message-warning, .elementor-message-error, .elementor-message-info { display: none !important; }</style>';
+        }, 1);
+
+        echo '<div class="wrap gurpovich-wrap">';
+        echo '<div class="gurpovich-card">';
+        echo '<h1>Homepage Content Injector</h1>';
+        
+        echo '<form method="post" class="gurpovich-form">';
         wp_nonce_field('gurpovich_homepage_action','gurpovich_homepage_nonce');
-        echo '<p><label for="gurp_post_id">WP Post/Page ID:</label><br><input type="number" name="gurp_post_id" id="gurp_post_id" required style="width:100%;max-width:300px;"></p>';
-        echo '<p><label for="gurp_content">Content Markup (use [key] lines to identify keys):</label><br><textarea name="gurp_content" id="gurp_content" rows="10" style="width:100%;"></textarea></p>';
-        echo '<p><input type="submit" name="gurp_inject" class="button button-primary" value="Save & Update Elementor"></p>';
+        
+        echo '<div class="gurpovich-form-group">';
+        echo '<label for="gurp_post_id">WP Post/Page ID:</label>';
+        echo '<input type="number" name="gurp_post_id" id="gurp_post_id" required>';
+        echo '</div>';
+        
+        echo '<div class="gurpovich-form-group">';
+        echo '<label for="gurp_content">Content Markup (use [key] lines to identify keys):</label>';
+        echo '<textarea name="gurp_content" id="gurp_content" rows="10"></textarea>';
+        echo '</div>';
+        
+        echo '<div class="gurpovich-button-group">';
+        echo '<input type="submit" name="gurp_inject" class="button button-primary" value="Save & Update Elementor">';
+        echo '</div>';
+        
         echo '</form>';
+        echo '</div>'; // End card
 
         if (isset($_POST['gurp_inject'])) {
             if (!isset($_POST['gurpovich_homepage_nonce']) || !wp_verify_nonce($_POST['gurpovich_homepage_nonce'],'gurpovich_homepage_action')) {
@@ -34,7 +54,7 @@ class Screen3_Homepage {
             }
             // Save mapping meta
             update_post_meta($post_id,'gurp_homepage_map',$map);
-            echo '<div class="updated"><p>Homepage mapping saved.</p></div>';
+            echo '<div class="gurpovich-notice gurpovich-notice-success"><p>Homepage mapping saved.</p></div>';
 
             // Fetch and update Elementor JSON data
             $data = get_post_meta($post_id,'_elementor_data',true);
@@ -43,16 +63,17 @@ class Screen3_Homepage {
                 if (is_array($elements)) {
                     $new = $this->process_elements($elements,$map);
                     update_post_meta($post_id,'_elementor_data',$new);
-                    echo '<div class="updated"><p>Elementor data updated.</p></div>';
+                    echo '<div class="gurpovich-notice gurpovich-notice-success"><p>Elementor data updated.</p></div>';
                 } else {
-                    echo '<div class="error"><p>Could not decode Elementor data.</p></div>';
+                    echo '<div class="gurpovich-notice gurpovich-notice-error"><p>Could not decode Elementor data.</p></div>';
                 }
             } else {
-                echo '<div class="error"><p>No Elementor data found for that ID.</p></div>';
+                echo '<div class="gurpovich-notice gurpovich-notice-error"><p>No Elementor data found for that ID.</p></div>';
             }
         }
 
         // Show mapping
+        echo '<div class="gurpovich-card">';
         echo '<h2>Current Homepage Mapping</h2>';
         if (!empty($_POST['gurp_post_id'])) {
             $existing = get_post_meta(intval($_POST['gurp_post_id']),'gurp_homepage_map',true);
@@ -62,8 +83,9 @@ class Screen3_Homepage {
                 echo '<p>No homepage mapping.</p>';
             }
         }
+        echo '</div>'; // End card
         
-        echo '</div>';
+        echo '</div>'; // End wrap
     }
 
     private function process_elements($elements, $map) {
