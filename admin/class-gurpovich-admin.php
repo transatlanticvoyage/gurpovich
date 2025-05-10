@@ -98,7 +98,7 @@ class Gurpovich_Admin {
         add_menu_page(
             __('Screen 1', 'gurpovich'),
             __('Screen 1', 'gurpovich'),
-            'manage_options',
+            'administrator',
             'gurposcreen1',
             array($this, 'display_screen1_page'),
             'dashicons-admin-generic',
@@ -127,7 +127,7 @@ class Gurpovich_Admin {
                 'gurposcreen1',
                 __($screen[0], 'gurpovich'),
                 __($screen[1], 'gurpovich'),
-                'manage_options',
+                'administrator',
                 $screen[2],
                 array($this, $screen[3])
             );
@@ -164,9 +164,10 @@ class Gurpovich_Admin {
         $user = wp_get_current_user();
         error_log('Current user ID: ' . $user->ID);
         error_log('User roles: ' . implode(', ', $user->roles));
+        error_log('Is admin: ' . (current_user_can('administrator') ? 'yes' : 'no'));
         error_log('Can manage options: ' . (current_user_can('manage_options') ? 'yes' : 'no'));
         
-        if (!current_user_can('manage_options')) {
+        if (!current_user_can('administrator')) {
             wp_die(__('You do not have sufficient permissions to access this page.', 'gurpovich'));
         }
         

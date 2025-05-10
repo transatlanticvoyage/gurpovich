@@ -65,10 +65,21 @@ function gurpovich_init() {
     
     // Directly register admin menu as a fallback
     if (is_admin()) {
+        error_log('In admin context, registering admin hooks');
         $admin = new Gurpovich\Admin\Gurpovich_Admin('gurpovich', GURPOVICH_VERSION);
-        add_action('admin_menu', array($admin, 'add_plugin_admin_menu'));
-        add_action('admin_enqueue_scripts', array($admin, 'enqueue_styles'));
-        add_action('admin_enqueue_scripts', array($admin, 'enqueue_scripts'));
+        
+        // Debug user capabilities
+        $user = wp_get_current_user();
+        error_log('Current user ID: ' . $user->ID);
+        error_log('User roles: ' . implode(', ', $user->roles));
+        error_log('Is admin: ' . (current_user_can('administrator') ? 'yes' : 'no'));
+        
+        // Only register admin menu if user is an administrator
+        if (current_user_can('administrator')) {
+            add_action('admin_menu', array($admin, 'add_plugin_admin_menu'));
+            add_action('admin_enqueue_scripts', array($admin, 'enqueue_styles'));
+            add_action('admin_enqueue_scripts', array($admin, 'enqueue_scripts'));
+        }
     }
 }
 add_action('plugins_loaded', 'gurpovich_init');
