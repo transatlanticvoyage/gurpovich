@@ -120,8 +120,8 @@ class Screen3_Homepage {
             return;
         }
 
-        // Decode the JSON data
-        $elementor_content = json_decode($elementor_data, true);
+        // Check if we need to decode the JSON
+        $elementor_content = is_string($elementor_data) ? json_decode($elementor_data, true) : $elementor_data;
         
         if (json_last_error() !== JSON_ERROR_NONE) {
             return;
