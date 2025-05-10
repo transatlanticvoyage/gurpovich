@@ -803,6 +803,8 @@ function gurpo_screen3_page() {
     echo '<button type="submit" name="function_inject_content_replace_shortcodes_1_submit" style="background:#6c2eb7;color:#fff;font-weight:bold;text-transform:lowercase;padding:10px 30px;border:none;border-radius:4px;cursor:pointer;margin-top:20px;display:block;">function_inject_content_replace_shortcodes_1</button>';
     echo '</form>';
     echo '</div>';
+    echo '<div style="margin-top: 20px; font-family: monospace; color: #666;">ui landmark id 1023</div>';
+    echo '</div>'; // Close the screen3 div
 }
 
 function gurpo_screen4_page() {
